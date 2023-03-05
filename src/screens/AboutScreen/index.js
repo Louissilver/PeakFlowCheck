@@ -15,37 +15,37 @@ const AboutScreen = () => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Sobre o aplicativo</Title>
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}
       </Paragraph>
       <AppTargetImage width={352} height={250} />
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}
       </Paragraph>
       <AppPermissionsImage width={352} height={250} />
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}
       </Paragraph>
       <AppFeaturesImage width={352} height={250} />
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}
       </Paragraph>
       <AppHowToTestImage width={352} height={250} />
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}
       </Paragraph>
       <AppCallADoctorImage width={352} height={250} />
-      <Paragraph>
+      <Paragraph textAlign={'justify'}>
         Lörem ipsum pseudos reavis om diaheten tetranade. Repel polypol, il
         dedeheten i ryde. Far kropolig till egode kägt. Nösk lasengar lalång är
         elgasbil det exodynat.{' '}

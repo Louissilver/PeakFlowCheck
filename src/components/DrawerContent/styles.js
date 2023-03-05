@@ -9,7 +9,6 @@ export default StyleSheet.create({
     height: '100%',
   },
   bodyHeader: {
-    marginLeft: 16,
     alignItems: 'center',
   },
   userName: {

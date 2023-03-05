@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import MenuItem from '../MenuItem';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DrawerContent = props => {
   const menuItems = [
@@ -50,7 +49,7 @@ const DrawerContent = props => {
           <View>
             <View style={styles.profileImage} />
           </View>
-          <Text style={styles.userName}>Ednilson</Text>
+          <Text style={styles.userName}>Luís Silveira</Text>
         </View>
         {menuItems.map(item => (
           <MenuItem
