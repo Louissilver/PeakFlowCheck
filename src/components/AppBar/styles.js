@@ -5,8 +5,8 @@ export default StyleSheet.create({
   navigation: {
     backgroundColor: theme.main,
     flexDirection: 'row',
-    height: 90,
-    justifyContent: 'space-around',
+    height: 60,
+    justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
     bottom: 0,
@@ -18,8 +18,8 @@ export default StyleSheet.create({
     paddingVertical: 10,
   },
   centralButton: {
-    paddingVertical: 5,
     backgroundColor: theme.textContrastMain,
-    borderRadius: 40,
+    borderRadius: 30,
+    padding: 7,
   },
 });

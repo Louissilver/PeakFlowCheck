@@ -1,17 +1,30 @@
+import {useRoute} from '@react-navigation/core';
 import React from 'react';
 import {SafeAreaView, ScrollView, View} from 'react-native';
-import HeaderShape from '../../components/HeaderShape';
-import {AppBar} from '../../components/AppBar';
+import AppBar from '../AppBar';
+import Header from '../Header';
+import HeaderShape from '../HeaderShape';
 import styles from './styles';
 
-const CommonScreen = ({navigation, children}) => {
+const CommonScreen = ({
+  navigation,
+  isHome = false,
+  isLoggedFeature = true,
+  children,
+}) => {
+  const route = useRoute();
+
   return (
     <SafeAreaView style={styles.background}>
       <ScrollView style={styles.scroll}>
-        <HeaderShape />
+        {isLoggedFeature ? (
+          <Header title={route.name} isHome={isHome} />
+        ) : (
+          <HeaderShape />
+        )}
         <View style={styles.content}>{children}</View>
       </ScrollView>
-      <AppBar navigation={navigation} />
+      {isLoggedFeature && <AppBar navigation={navigation} />}
     </SafeAreaView>
   );
 };

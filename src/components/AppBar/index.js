@@ -15,7 +15,7 @@ const AppBar = ({navigation}) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('Teste de PFE')}
         style={styles.centralButton}>
-        <View style={styles.button}>
+        <View>
           <Icon name="flask" size={40} color={theme.main} />
         </View>
       </TouchableOpacity>
@@ -28,4 +28,4 @@ const AppBar = ({navigation}) => {
   );
 };
 
-export {AppBar};
+export default AppBar;
