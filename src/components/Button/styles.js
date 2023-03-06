@@ -9,7 +9,7 @@ export default StyleSheet.create({
     backgroundColor: theme.main,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 40,
   },
   textButton: {
     fontSize: 20,
