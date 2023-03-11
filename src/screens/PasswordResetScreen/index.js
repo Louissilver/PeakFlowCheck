@@ -10,7 +10,7 @@ const PasswordResetScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <CommonScreen navigation={navigation}>
+    <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Redefinição de senha</Title>
       <PasswordResetImage width={352} height={250} />
       <Paragraph>

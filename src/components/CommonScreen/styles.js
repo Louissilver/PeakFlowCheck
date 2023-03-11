@@ -11,7 +11,7 @@ export default StyleSheet.create({
   },
   content: {
     alignItems: 'center',
-    paddingHorizontal: 25,
+    paddingHorizontal: '7%',
     marginBottom: 110,
   },
   space: {

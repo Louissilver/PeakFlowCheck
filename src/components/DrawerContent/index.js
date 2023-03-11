@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import MenuItem from '../MenuItem';
 import styles from './styles';
 
@@ -47,7 +47,10 @@ const DrawerContent = props => {
       <View>
         <View style={styles.bodyHeader}>
           <View>
-            <View style={styles.profileImage} />
+            <Image
+              source={require('../../assets/profile.jpg')}
+              style={styles.profileImage}
+            />
           </View>
           <Text style={styles.userName}>Luís Silveira</Text>
         </View>

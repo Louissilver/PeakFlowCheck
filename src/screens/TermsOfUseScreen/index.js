@@ -10,7 +10,7 @@ const TermsOfUseScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <CommonScreen navigation={navigation}>
+    <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <TermsOfUseImage width={352} height={250} />
       <Title>Termos de uso</Title>
       <Paragraph>

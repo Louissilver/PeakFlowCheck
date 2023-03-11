@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import LoginImage from '../../assets/undraw_lost_online_re_upmy.svg';
@@ -9,6 +9,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
 import {StyleSheet, Text, View} from 'react-native';
+import {TextLink} from '../../components/TextLink';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
@@ -17,8 +18,6 @@ const LoginSchema = Yup.object().shape({
 
 const LoginScreen = () => {
   const navigation = useNavigation();
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [senhaFocused, setSenhaFocused] = useState(false);
 
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
@@ -70,7 +69,19 @@ const LoginScreen = () => {
                 <Text style={styles.error}>{errors.password}</Text>
               )}
 
+              <TextLink
+                onPress={() => navigation.navigate('Esqueci minha senha')}
+                text="Esqueceu sua senha?"
+                link="Clique aqui"
+              />
+
               <Button>Login</Button>
+
+              <TextLink
+                onPress={() => navigation.navigate('Cadastro')}
+                text="Ainda não tem um login?"
+                link="Crie uma conta"
+              />
             </>
           )}
         </Formik>
@@ -83,7 +94,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 20,
     flex: 1,
-    padding: 20,
+    paddingVertical: 20,
     justifyContent: 'center',
     backgroundColor: theme.background,
     width: '100%',

@@ -10,7 +10,7 @@ const ForgotPasswordScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <CommonScreen navigation={navigation}>
+    <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Esqueci minha senha</Title>
       <ForgotPasswordImage width={352} height={250} />
       <Paragraph>
