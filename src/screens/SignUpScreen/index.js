@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import SplashscreenImage from '../../assets/undraw_medicine_b-1-ol.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {useNavigation} from '@react-navigation/core';
-import {TextInput} from 'react-native-paper';
+import {TextInput, RadioButton} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
 import {StyleSheet, Text, View} from 'react-native';
 import {TextLink} from '../../components/TextLink';
 import DateInput from '../../components/DateInput';
+import {CheckBox} from 'react-native-elements';
 
 const LoginSchema = Yup.object().shape({
   name: Yup.string().required('Campo obrigatório'),
@@ -51,6 +52,7 @@ const SignUpScreen = () => {
       <View style={styles.container}>
         <Formik
           initialValues={{
+            termsOfUse: false,
             name: '',
             date: '',
             height: '',
@@ -58,7 +60,6 @@ const SignUpScreen = () => {
             email: '',
             password: '',
             passConfirm: '',
-            termsOfUse: false,
           }}
           validationSchema={LoginSchema}
           onSubmit={values => console.log(values)}>
@@ -69,6 +70,7 @@ const SignUpScreen = () => {
             values,
             errors,
             touched,
+            setFieldValue,
           }) => (
             <>
               <TextInput
@@ -86,13 +88,49 @@ const SignUpScreen = () => {
               )}
 
               <DateInput
-                label="Data de Nascimento"
+                label="Data de nascimento"
                 value={values.date}
                 error={errors.date}
                 touched={touched.date}
                 onChangeText={handleChange('date')}
                 onBlur={handleBlur('date')}
               />
+
+              <TextInput
+                label="Altura"
+                mode="outlined"
+                onChangeText={handleChange('height')}
+                onBlur={handleBlur('height')}
+                value={values.height}
+                error={errors.height && touched.height}
+                style={styles.input}
+                outlineStyle={{borderRadius: 50, borderColor: 'transparent'}}
+              />
+              {errors.height && touched.height && (
+                <Text style={styles.error}>{errors.height}</Text>
+              )}
+
+              <RadioButton.Group
+                onValueChange={handleChange('gender')}
+                value={values.gender}
+                error={errors.gender && touched.gender}>
+                <Text style={styles.label}>Sexo</Text>
+                <View style={styles.radio}>
+                  <RadioButton.Item
+                    label="Masculino"
+                    value="masculino"
+                    color={theme.primary}
+                  />
+                  <RadioButton.Item
+                    label="Feminino"
+                    value="feminino"
+                    color={theme.primary}
+                  />
+                </View>
+                {errors.gender && touched.gender && (
+                  <Text style={styles.error}>{errors.gender}</Text>
+                )}
+              </RadioButton.Group>
 
               <TextInput
                 label="E-mail"
@@ -126,11 +164,42 @@ const SignUpScreen = () => {
                 <Text style={styles.error}>{errors.password}</Text>
               )}
 
-              <TextLink
-                onPress={() => navigation.navigate('Termos de uso')}
-                text="Concordo que li e aceito os"
-                link="termos."
+              <TextInput
+                label="Confirmação de senha"
+                mode="outlined"
+                onChangeText={handleChange('passConfirm')}
+                onBlur={handleBlur('passConfirm')}
+                value={values.passConfirm}
+                error={errors.passConfirm && touched.passConfirm}
+                secureTextEntry
+                style={styles.input}
+                outlineStyle={{
+                  borderRadius: 50,
+                  borderColor: 'transparent',
+                }}
               />
+              {errors.passConfirm && touched.passConfirm && (
+                <Text style={styles.error}>{errors.passConfirm}</Text>
+              )}
+
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  style={styles.checkbox}
+                  value={values.termsOfUse}
+                  checked={values.termsOfUse}
+                  onPress={() => {
+                    setFieldValue('termsOfUse', !values.termsOfUse);
+                  }}
+                />
+                <TextLink
+                  onPress={() => navigation.navigate('Termos de uso')}
+                  text="Concordo que li e aceito os"
+                  link="termos."
+                />
+              </View>
+              {errors.termsOfUse && touched.termsOfUse && (
+                <Text style={styles.error}>{errors.termsOfUse}</Text>
+              )}
 
               <Button>Cadastrar</Button>
 
@@ -168,6 +237,24 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 10,
     paddingHorizontal: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 20,
+    paddingLeft: 20,
+    color: theme.black,
+  },
+  radio: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    justifyContent: 'space-between',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
 });
 

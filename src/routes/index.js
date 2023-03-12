@@ -26,7 +26,7 @@ const DrawerNavigation = () => {
       }}
       drawerContent={props => <DrawerContent {...props} />}
       drawerStyle={{width: '95%'}}>
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Início"
         component={HomeScreen}
         options={{headerShown: false}}
@@ -47,23 +47,23 @@ const DrawerNavigation = () => {
         options={{headerShown: false}}
       />
       <Drawer.Screen
+      name="Mapa da saúde"
+      component={HealthMapScreen}
+      options={{headerShown: false}}
+    /> */}
+      <Drawer.Screen
         name="Cadastro"
         component={SignUpScreen}
         options={{headerShown: false}}
       />
       <Drawer.Screen
-        name="Esqueci minha senha"
-        component={ForgotPasswordScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Mapa da saúde"
-        component={HealthMapScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
         name="Login"
         component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="Esqueci minha senha"
+        component={ForgotPasswordScreen}
         options={{headerShown: false}}
       />
       <Drawer.Screen
