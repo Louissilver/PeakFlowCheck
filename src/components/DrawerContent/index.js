@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Image} from 'react-native';
 import MenuItem from '../MenuItem';
 import styles from './styles';
+import Logo from '../../assets/logo.svg';
 
 const DrawerContent = props => {
   const menuItems = [
@@ -46,13 +47,7 @@ const DrawerContent = props => {
     <View style={styles.container}>
       <View>
         <View style={styles.bodyHeader}>
-          <View>
-            <Image
-              source={require('../../assets/profile.jpg')}
-              style={styles.profileImage}
-            />
-          </View>
-          <Text style={styles.userName}>Luís Silveira</Text>
+          <Logo width={190} height={100} />
         </View>
         {menuItems.map(item => (
           <MenuItem

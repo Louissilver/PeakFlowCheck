@@ -12,7 +12,7 @@ export default StyleSheet.create({
   content: {
     alignItems: 'center',
     paddingHorizontal: '7%',
-    marginBottom: 110,
+    marginBottom: 60,
   },
   space: {
     marginTop: 20,

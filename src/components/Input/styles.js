@@ -15,4 +15,21 @@ export default StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 20,
   },
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+    marginTop: 20,
+    paddingLeft: 20,
+    color: theme.black,
+  },
+  radio: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    justifyContent: 'space-between',
+  },
+  outline: {
+    borderRadius: 50,
+    borderColor: 'transparent',
+  },
 });

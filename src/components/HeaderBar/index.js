@@ -4,9 +4,8 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {theme} from '../../styles/globalStyles';
-import Logo from '../../assets/logo.svg';
 
-const Header = ({title, isHome = false}) => {
+const HeaderBar = ({title, isHome = false}) => {
   const navigation = useNavigation();
 
   const handleLogout = () => {
@@ -20,11 +19,20 @@ const Header = ({title, isHome = false}) => {
         backgroundColor="transparent"
         barStyle="dark-content"
       />
-      <View style={styles.bodyHeader}>
-        <Logo width={180} height={100} style={styles.logo} />
+      <View style={styles.headerContainer}>
+        {!isHome && (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrow-left" size={35} color={theme.secondary} />
+          </TouchableOpacity>
+        )}
+        {isHome && <View style={{width: 35}} />}
+        <Text style={styles.title}>{title}</Text>
+        <TouchableOpacity onPress={handleLogout}>
+          <Icon name="logout" size={35} color={theme.secondary} />
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-export default Header;
+export default HeaderBar;
