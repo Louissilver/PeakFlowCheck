@@ -27,6 +27,32 @@ const DrawerNavigation = () => {
       drawerContent={props => <DrawerContent {...props} />}
       drawerStyle={{width: '95%'}}>
       <Drawer.Screen
+        name="Cadastro"
+        component={SignUpScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="Esqueci minha senha"
+        component={ForgotPasswordScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="Redefinição de senha"
+        component={PasswordResetScreen}
+        options={{headerShown: false}}
+      />
+
+      <Drawer.Screen
+        name="Termos de uso"
+        component={TermsOfUseScreen}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
         name="Início"
         component={HomeScreen}
         options={{headerShown: false}}
@@ -49,51 +75,6 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         name="Mapa da saúde"
         component={HealthMapScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Cadastro"
-        component={SignUpScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Esqueci minha senha"
-        component={ForgotPasswordScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Novo alarme"
-        component={NewAlarmScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Redefinição de senha"
-        component={PasswordResetScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Teste de PFE"
-        component={PeakFlowScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Lista de resultados"
-        component={ResultsScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Exportar resultados"
-        component={ResultExportScreen}
-        options={{headerShown: false}}
-      />
-      <Drawer.Screen
-        name="Termos de uso"
-        component={TermsOfUseScreen}
         options={{headerShown: false}}
       />
     </Drawer.Navigator>

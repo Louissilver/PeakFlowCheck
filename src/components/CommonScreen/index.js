@@ -17,7 +17,11 @@ const CommonScreen = ({
 
   return (
     <SafeAreaView style={styles.background}>
-      {isLoggedFeature && <HeaderBar title={route.name} isHome={isHome} />}
+      <HeaderBar
+        title={route.name}
+        isHome={isHome}
+        isLoggedFeature={isLoggedFeature}
+      />
       <ScrollView style={styles.scroll}>
         {isLoggedFeature ? <Header /> : <HeaderShape />}
         <View style={styles.content}>{children}</View>

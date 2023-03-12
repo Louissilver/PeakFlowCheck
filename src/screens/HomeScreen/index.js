@@ -8,7 +8,7 @@ const HomeScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <CommonScreen isHome navigation={navigation}>
+    <CommonScreen navigation={navigation}>
       <Title>Início</Title>
       <HomeEmptyChartImage width={352} height={250} />
     </CommonScreen>

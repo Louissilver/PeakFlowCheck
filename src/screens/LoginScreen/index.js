@@ -75,7 +75,16 @@ const LoginScreen = () => {
                 link="Clique aqui"
               />
 
-              <Button>Login</Button>
+              <Button
+                onPress={() => {
+                  handleSubmit();
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Início'}],
+                  });
+                }}>
+                Login
+              </Button>
 
               <TextLink
                 onPress={() => navigation.navigate('Cadastro')}

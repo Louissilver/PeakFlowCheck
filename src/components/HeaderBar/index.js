@@ -1,15 +1,25 @@
 import React from 'react';
-import {StatusBar, Text, TouchableOpacity, View, Image} from 'react-native';
+import {
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  Alert,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {theme} from '../../styles/globalStyles';
 
-const HeaderBar = ({title, isHome = false}) => {
+const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    navigation.navigate('Login');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
   };
 
   return (
@@ -20,16 +30,22 @@ const HeaderBar = ({title, isHome = false}) => {
         barStyle="dark-content"
       />
       <View style={styles.headerContainer}>
-        {!isHome && (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+        {navigation.canGoBack() && (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}>
             <Icon name="arrow-left" size={35} color={theme.secondary} />
           </TouchableOpacity>
         )}
-        {isHome && <View style={{width: 35}} />}
+        {!navigation.canGoBack() && <View style={{width: 35}} />}
         <Text style={styles.title}>{title}</Text>
-        <TouchableOpacity onPress={handleLogout}>
-          <Icon name="logout" size={35} color={theme.secondary} />
-        </TouchableOpacity>
+        {isLoggedFeature && (
+          <TouchableOpacity onPress={() => handleLogout()}>
+            <Icon name="logout" size={35} color={theme.secondary} />
+          </TouchableOpacity>
+        )}
+        {!isLoggedFeature && <View style={{width: 35}} />}
       </View>
     </View>
   );
