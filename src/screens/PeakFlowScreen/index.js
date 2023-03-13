@@ -5,9 +5,7 @@ import {Paragraph} from '../../components/Paragraph';
 import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 
-const PeakFlowScreen = () => {
-  const navigation = useNavigation();
-
+const PeakFlowScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Medidor de Pico de Fluxo</Title>

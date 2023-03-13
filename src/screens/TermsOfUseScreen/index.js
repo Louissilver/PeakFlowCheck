@@ -6,9 +6,7 @@ import TermsOfUseImage from '../../assets/undraw_terms_re_6ak4.svg';
 import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 
-const TermsOfUseScreen = () => {
-  const navigation = useNavigation();
-
+const TermsOfUseScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <TermsOfUseImage width={352} height={250} />

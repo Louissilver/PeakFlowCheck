@@ -16,9 +16,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Campo obrigatório'),
 });
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
-
+const LoginScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Bom te ver de novo!</Title>
@@ -78,10 +76,7 @@ const LoginScreen = () => {
               <Button
                 onPress={() => {
                   handleSubmit();
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'Início'}],
-                  });
+                  navigation.navigate('Logado');
                 }}>
                 Login
               </Button>

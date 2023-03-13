@@ -6,9 +6,7 @@ import ForgotPasswordImage from '../../assets/undraw_contact_us_re_4qqt.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {useNavigation} from '@react-navigation/core';
 
-const ForgotPasswordScreen = () => {
-  const navigation = useNavigation();
-
+const ForgotPasswordScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Esqueci minha senha</Title>

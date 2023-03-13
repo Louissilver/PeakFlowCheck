@@ -42,9 +42,7 @@ const LoginSchema = Yup.object().shape({
     .required('Você precisa aceitar os termos'),
 });
 
-const SignUpScreen = () => {
-  const navigation = useNavigation();
-
+const SignUpScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Cadastro</Title>

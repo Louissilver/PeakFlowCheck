@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {theme} from '../../styles/globalStyles';
+import {DrawerActions} from '@react-navigation/native';
 
 const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
         barStyle="dark-content"
       />
       <View style={styles.headerContainer}>
-        {navigation.canGoBack() && (
+        {navigation.canGoBack() && !isHome && (
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
@@ -38,7 +39,7 @@ const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
             <Icon name="arrow-left" size={35} color={theme.secondary} />
           </TouchableOpacity>
         )}
-        {!navigation.canGoBack() && <View style={{width: 35}} />}
+        {(!navigation.canGoBack() || isHome) && <View style={{width: 35}} />}
         <Text style={styles.title}>{title}</Text>
         {isLoggedFeature && (
           <TouchableOpacity onPress={() => handleLogout()}>

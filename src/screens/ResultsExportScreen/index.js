@@ -5,9 +5,7 @@ import {Paragraph} from '../../components/Paragraph';
 import CommonScreen from '../../components/CommonScreen';
 import {useNavigation} from '@react-navigation/core';
 
-const ResultsExportScreen = () => {
-  const navigation = useNavigation();
-
+const ResultsExportScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Exportar resultados</Title>

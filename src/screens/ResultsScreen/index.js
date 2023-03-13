@@ -3,12 +3,9 @@ import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import {Paragraph} from '../../components/Paragraph';
 import ResultsEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
-import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 
-const ResultsScreen = () => {
-  const navigation = useNavigation();
-
+const ResultsScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Resultados</Title>
@@ -19,7 +16,11 @@ const ResultsScreen = () => {
         elgasbil det exodynat.{' '}
       </Paragraph>
       <Button>Ver mais</Button>
-      <Button secondary>Exportar lista</Button>
+      <Button
+        secondary
+        onPress={() => navigation.navigate('Exportar resultados')}>
+        Exportar lista
+      </Button>
     </CommonScreen>
   );
 };

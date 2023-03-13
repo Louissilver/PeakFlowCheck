@@ -6,9 +6,7 @@ import PasswordResetImage from '../../assets/undraw_my_password_re_ydq7.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {useNavigation} from '@react-navigation/core';
 
-const PasswordResetScreen = () => {
-  const navigation = useNavigation();
-
+const PasswordResetScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Redefinição de senha</Title>

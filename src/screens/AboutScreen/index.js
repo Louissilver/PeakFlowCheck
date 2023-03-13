@@ -6,11 +6,9 @@ import AppPermissionsImage from '../../assets/undraw_subscriptions_re_k7jj.svg';
 import AppFeaturesImage from '../../assets/undraw_diet_ghvw.svg';
 import AppHowToTestImage from '../../assets/undraw_scientist_3ow3.svg';
 import AppCallADoctorImage from '../../assets/undraw_doctor_kw-5-l.svg';
-import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 
-const AboutScreen = () => {
-  const navigation = useNavigation();
+const AboutScreen = ({navigation}) => {
 
   return (
     <CommonScreen navigation={navigation}>

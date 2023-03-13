@@ -4,9 +4,7 @@ import {Paragraph} from '../../components/Paragraph';
 import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 
-const HealthMapScreen = () => {
-  const navigation = useNavigation();
-
+const HealthMapScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Mapa da saúde</Title>

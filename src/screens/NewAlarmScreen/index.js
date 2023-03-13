@@ -6,9 +6,7 @@ import NewAlarmImage from '../../assets/undraw_time_management_re_tk5w.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {useNavigation} from '@react-navigation/core';
 
-const NewAlarmScreen = () => {
-  const navigation = useNavigation();
-
+const NewAlarmScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Novo alarme</Title>

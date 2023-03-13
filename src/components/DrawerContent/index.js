@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View} from 'react-native';
 import MenuItem from '../MenuItem';
 import styles from './styles';
 import Logo from '../../assets/logo.svg';
@@ -33,7 +33,7 @@ const DrawerContent = props => {
     },
     {
       label: 'Lista de resultados',
-      route: 'Lista de resultados',
+      route: 'Resultados',
       icon: 'format-list-bulleted',
     },
     {
@@ -42,6 +42,13 @@ const DrawerContent = props => {
       icon: 'information',
     },
   ];
+
+  const handleLogout = () => {
+    props.navigation.reset({
+      index: 0,
+      routes: [{name: 'Login'}],
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -62,7 +69,7 @@ const DrawerContent = props => {
       <View style={styles.footer}>
         <MenuItem
           stack={props}
-          onPress={() => console.log('Teste')}
+          onPress={() => handleLogout()}
           icon="power"
           label="Sair"
         />

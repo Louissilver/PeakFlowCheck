@@ -4,11 +4,9 @@ import HomeEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import {useNavigation} from '@react-navigation/native';
 import CommonScreen from '../../components/CommonScreen';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
-
+const HomeScreen = ({navigation}) => {
   return (
-    <CommonScreen navigation={navigation}>
+    <CommonScreen navigation={navigation} isHome={true}>
       <Title>Início</Title>
       <HomeEmptyChartImage width={352} height={250} />
     </CommonScreen>

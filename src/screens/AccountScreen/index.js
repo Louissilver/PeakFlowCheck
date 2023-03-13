@@ -34,9 +34,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Campo obrigatório'),
 });
 
-const AccountScreen = () => {
-  const navigation = useNavigation();
-
+const AccountScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation}>
       <Title>Altere aqui os dados da sua conta</Title>
