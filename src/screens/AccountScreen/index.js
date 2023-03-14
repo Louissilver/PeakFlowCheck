@@ -1,7 +1,6 @@
 import React from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
-import {useNavigation} from '@react-navigation/core';
 import CommonScreen from '../../components/CommonScreen';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -62,24 +61,26 @@ const AccountScreen = ({navigation}) => {
             touched,
           }) => (
             <>
-              {inputs.map(({label, item, options}) => {
-                return (
-                  <Input
-                    key={item}
-                    item={item}
-                    label={label}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    radioOptions={options}
-                  />
-                );
-              })}
+              <View style={styles.form}>
+                {inputs.map(({label, item, options}) => {
+                  return (
+                    <Input
+                      key={item}
+                      item={item}
+                      label={label}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      values={values}
+                      errors={errors}
+                      touched={touched}
+                      options={options}
+                    />
+                  );
+                })}
+              </View>
 
               <TextLink
-                onPress={() => navigation.navigate('Esqueci minha senha')}
+                onPress={() => navigation.navigate('Nova senha')}
                 text="Quer redefinir sua senha?"
                 link="Clique aqui"
               />
@@ -105,46 +106,12 @@ const styles = StyleSheet.create({
     backgroundColor: theme.background,
     width: '100%',
   },
-  input: {
-    borderRadius: 50,
-    marginBottom: 10,
-    height: 30,
-    overflow: 'hidden',
-    paddingLeft: 5,
-    paddingVertical: 10,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 10,
-    marginTop: 20,
-    paddingLeft: 20,
-    color: theme.black,
-  },
-  radio: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    justifyContent: 'space-between',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-  },
-  checkbox: {
-    marginTop: 10,
-  },
-  outline: {
-    borderRadius: 50,
-    borderColor: 'transparent',
-  },
   info: {
     fontSize: 12,
     textAlign: 'center',
+  },
+  form: {
+    marginBottom: 20,
   },
 });
 

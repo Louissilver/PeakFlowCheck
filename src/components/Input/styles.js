@@ -2,34 +2,40 @@ import {StyleSheet} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 
 export default StyleSheet.create({
-  input: {
-    borderRadius: 50,
-    marginBottom: 10,
-    height: 30,
-    overflow: 'hidden',
-    paddingLeft: 5,
-    paddingVertical: 10,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-    paddingHorizontal: 20,
+  inputContainer: {
+    flex: 1,
+    justifyContent: 'space-around',
+    marginVertical: 5,
   },
   label: {
-    fontSize: 16,
-    marginBottom: 10,
-    marginTop: 20,
     paddingLeft: 20,
-    color: theme.black,
+    marginBottom: 5,
+    fontSize: 16,
+  },
+  input: {
+    fontSize: 16,
+    width: '100%',
+    backgroundColor: theme.white,
+    borderRadius: 25,
+    paddingLeft: 20,
+  },
+  picker: {
+    fontSize: 16,
+    width: '100%',
+    backgroundColor: theme.white,
+    borderRadius: 50,
+    paddingLeft: 3,
+  },
+  error: {
+    paddingLeft: 20,
+    alignSelf: 'flex-start',
+    marginTop: 5,
+    color: 'red',
   },
   radio: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
     justifyContent: 'space-between',
-  },
-  outline: {
-    borderRadius: 50,
-    borderColor: 'transparent',
   },
 });

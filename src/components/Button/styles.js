@@ -3,7 +3,7 @@ import {theme} from '../../styles/globalStyles';
 
 export default StyleSheet.create({
   button: {
-    height: 80,
+    height: 70,
     width: '100%',
     borderRadius: 10,
     backgroundColor: theme.main,

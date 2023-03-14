@@ -45,7 +45,7 @@ const LoginSchema = Yup.object().shape({
 const SignUpScreen = ({navigation}) => {
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
-      <Title>Cadastro</Title>
+      <Title>Bem vindo!</Title>
       <Paragraph>
         Lörem ipsum ninde låra huruvida gur för plakell el. Mädose smartboard.{' '}
       </Paragraph>
@@ -76,21 +76,24 @@ const SignUpScreen = ({navigation}) => {
             setFieldValue,
           }) => (
             <>
-              {inputs.map(({label, item, options}) => {
-                return (
-                  <Input
-                    key={item}
-                    item={item}
-                    label={label}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    values={values}
-                    errors={errors}
-                    touched={touched}
-                    radioOptions={options}
-                  />
-                );
-              })}
+              <View style={styles.form}>
+                {inputs.map(({label, item, options, secureTextEntry}) => {
+                  return (
+                    <Input
+                      key={item}
+                      item={item}
+                      label={label}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      values={values}
+                      errors={errors}
+                      touched={touched}
+                      options={options}
+                      secureTextEntry={secureTextEntry}
+                    />
+                  );
+                })}
+              </View>
 
               <View style={styles.checkboxContainer}>
                 <CheckBox
@@ -137,32 +140,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.background,
     width: '100%',
   },
-  input: {
-    borderRadius: 50,
-    marginBottom: 10,
-    height: 30,
-    overflow: 'hidden',
-    paddingLeft: 5,
-    paddingVertical: 10,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-    paddingHorizontal: 20,
-  },
-  label: {
-    fontSize: 16,
-    marginBottom: 10,
-    marginTop: 20,
-    paddingLeft: 20,
-    color: theme.black,
-  },
-  radio: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    justifyContent: 'space-between',
-  },
   checkboxContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -170,13 +147,12 @@ const styles = StyleSheet.create({
   checkbox: {
     marginTop: 10,
   },
-  outline: {
-    borderRadius: 50,
-    borderColor: 'transparent',
-  },
   info: {
     fontSize: 12,
     textAlign: 'center',
+  },
+  form: {
+    marginBottom: 20,
   },
 });
 

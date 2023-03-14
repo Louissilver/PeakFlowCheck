@@ -3,13 +3,13 @@ import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import LoginImage from '../../assets/undraw_lost_online_re_upmy.svg';
 import CommonScreen from '../../components/CommonScreen';
-import {useNavigation} from '@react-navigation/core';
-import {TextInput} from 'react-native-paper';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {TextLink} from '../../components/TextLink';
+import {inputs} from './inputs';
+import {Input} from '../../components/Input';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
@@ -35,40 +35,25 @@ const LoginScreen = ({navigation}) => {
             touched,
           }) => (
             <>
-              <TextInput
-                label="E-mail"
-                mode="outlined"
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
-                value={values.email}
-                error={errors.email && touched.email}
-                style={styles.input}
-                outlineStyle={{borderRadius: 50, borderColor: 'transparent'}}
-              />
-              {errors.email && touched.email && (
-                <Text style={styles.error}>{errors.email}</Text>
-              )}
-
-              <TextInput
-                label="Senha"
-                mode="outlined"
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-                error={errors.password && touched.password}
-                secureTextEntry
-                style={styles.input}
-                outlineStyle={{
-                  borderRadius: 50,
-                  borderColor: 'transparent',
-                }}
-              />
-              {errors.password && touched.password && (
-                <Text style={styles.error}>{errors.password}</Text>
-              )}
+              <View style={styles.form}>
+                {inputs.map(({label, item}) => {
+                  return (
+                    <Input
+                      key={item}
+                      item={item}
+                      label={label}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      values={values}
+                      errors={errors}
+                      touched={touched}
+                    />
+                  );
+                })}
+              </View>
 
               <TextLink
-                onPress={() => navigation.navigate('Esqueci minha senha')}
+                onPress={() => navigation.navigate('Nova senha')}
                 text="Esqueceu sua senha?"
                 link="Clique aqui"
               />
@@ -103,18 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.background,
     width: '100%',
   },
-  input: {
-    borderRadius: 50,
-    marginBottom: 10,
-    height: 30,
-    overflow: 'hidden',
-    paddingLeft: 5,
-    paddingVertical: 10,
-  },
-  error: {
-    color: 'red',
-    marginBottom: 10,
-    paddingHorizontal: 20,
+  form: {
+    marginBottom: 20,
   },
 });
 

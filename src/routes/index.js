@@ -34,7 +34,7 @@ const StackNavigation = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Esqueci minha senha"
+        name="Nova senha"
         component={ForgotPasswordScreen}
         options={{headerShown: false}}
       />
