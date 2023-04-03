@@ -1,10 +1,10 @@
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import styles from './styles';
 
-const Button = ({onPress, children, secondary = false}) => {
-  return (
+const Button = ({onPress, children, secondary = false, disable = false}) => {
+  return !disable ? (
     <TouchableOpacity
       style={[
         styles.button,
@@ -23,6 +23,20 @@ const Button = ({onPress, children, secondary = false}) => {
         {children}
       </Text>
     </TouchableOpacity>
+  ) : (
+    <View style={[styles.button, {backgroundColor: theme.grey}]}>
+      <Text
+        style={[
+          styles.textButton,
+          {
+            color: secondary
+              ? theme.textContrastSecondary
+              : theme.textContrastMain,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
   );
 };
 
