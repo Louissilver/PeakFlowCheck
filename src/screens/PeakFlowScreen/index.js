@@ -52,6 +52,7 @@ const PeakFlowScreen = ({navigation}) => {
           audioSource: 6,
           bufferSize: 8192,
         });
+        let audioBuffer = Buffer.from([]);
         AudioRecord.start();
         setRecording(true);
         timer = setTimeout(() => {
@@ -68,7 +69,6 @@ const PeakFlowScreen = ({navigation}) => {
   const stopRecording = async () => {
     try {
       const audioBuffer = await AudioRecord.stop();
-
       setAudioURI(audioBuffer);
       setRecording(false);
     } catch (err) {
@@ -91,20 +91,28 @@ const PeakFlowScreen = ({navigation}) => {
   const generateResult = async () => {
     const readedAudio = await RNFS.readFile(audioURI, 'base64');
     const audioBuffer = Buffer.from(readedAudio, 'base64');
-    const fftSize = 65536;
-    console.log(audioBuffer.length);
+    const signal = audioBuffer;
+
+    const fftSize = Math.pow(2, Math.ceil(Math.log2(signal.length)));
+    const buffer = Buffer.alloc(fftSize, 0);
+    signal.copy(buffer);
 
     const fft = new FFT(fftSize, sampleRate);
-    const signal = audioBuffer.slice(0, fftSize);
-    fft.forward(signal);
+    fft.forward(buffer);
 
     let spectrum = fft.spectrum;
     spectrum = spectrum.slice(1);
-    let maxIndex = spectrum.indexOf(Math.max(...spectrum));
-    while (maxIndex == 0) {
-      spectrum = spectrum.slice(1);
-      maxIndex = spectrum.indexOf(Math.max(...spectrum));
+    let maxValue = 0;
+    let maxIndex = 0;
+    for (let i = 1; i < spectrum.length; i++) {
+      if (spectrum[i] > maxValue && i != 0) {
+        maxValue = spectrum[i];
+        maxIndex = i;
+      }
     }
+
+    console.log(maxIndex);
+    console.log(maxValue);
 
     const frequency = ((maxIndex * sampleRate) / fftSize) * 2;
 
