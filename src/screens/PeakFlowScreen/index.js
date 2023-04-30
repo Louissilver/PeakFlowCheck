@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
-import {Paragraph} from '../../components/Paragraph';
 import CommonScreen from '../../components/CommonScreen';
 import AudioRecord from 'react-native-audio-record';
 import {PermissionsAndroid} from 'react-native';
@@ -9,11 +8,23 @@ import {Buffer} from 'buffer';
 import {FFT} from 'dsp.js';
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
+import {ResultCard} from '../../components/ResultCard';
+import {Paragraph} from '../../components/Paragraph';
+import {calculatePEF} from '../../utils';
+
+const user = {
+  gender: 'Male',
+  age: 24,
+  height: 1.81,
+};
 
 const PeakFlowScreen = ({navigation}) => {
   const [recording, setRecording] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [audioURI, setAudioURI] = useState(null);
-  const [maxFrequency, setMaxFrequency] = useState(0);
+  const [calculatedPeakFlow, setCalculatedPeakFlow] = useState(null);
+  const [result, setResult] = useState(null);
 
   const sampleRate = 44100;
   const recordingDuration = 3000;
@@ -25,8 +36,17 @@ const PeakFlowScreen = ({navigation}) => {
         stopRecording();
       }, recordingDuration);
     }
-    return () => clearTimeout(recordingTimer);
+    return () => {
+      clearTimeout(recordingTimer);
+    };
   }, [recording]);
+
+  useEffect(() => {
+    const resetResult = navigation.addListener('focus', () => {
+      setResult(null);
+    });
+    return resetResult;
+  }, [navigation]);
 
   let timer;
   const startRecording = async () => {
@@ -48,11 +68,10 @@ const PeakFlowScreen = ({navigation}) => {
           sampleRate: sampleRate,
           channels: 1,
           bitsPerSample: 16,
-          wavFile: 'audio.aac',
+          wavFile: 'audio.wav',
           audioSource: 6,
           bufferSize: 8192,
         });
-        let audioBuffer = Buffer.from([]);
         AudioRecord.start();
         setRecording(true);
         timer = setTimeout(() => {
@@ -81,29 +100,38 @@ const PeakFlowScreen = ({navigation}) => {
       if (error) {
         console.log('Erro ao carregar o arquivo de áudio', error);
       } else {
+        setPlaying(true);
         sound.play(() => {
           sound.release();
+          setPlaying(false);
         });
       }
     });
   };
 
   const generateResult = async () => {
+    setGenerating(true);
+    // Faz a leitura do arquivo de áudio e transforma em um buffer
     const readedAudio = await RNFS.readFile(audioURI, 'base64');
     const audioBuffer = Buffer.from(readedAudio, 'base64');
     const signal = audioBuffer;
 
+    // Calcula o tamanho da FFT para que seja igual ao buffer e transforma os dois em um múltiplo de 2
     const fftSize = Math.pow(2, Math.ceil(Math.log2(signal.length)));
     const buffer = Buffer.alloc(fftSize, 0);
     signal.copy(buffer);
 
+    // Gera a FFT
     const fft = new FFT(fftSize, sampleRate);
     fft.forward(buffer);
 
+    // Busca o índice do maior espectro de frequência
     let spectrum = fft.spectrum;
-    spectrum = spectrum.slice(1);
     let maxValue = 0;
     let maxIndex = 0;
+
+    spectrum = spectrum.slice(1);
+
     for (let i = 1; i < spectrum.length; i++) {
       if (spectrum[i] > maxValue && i != 0) {
         maxValue = spectrum[i];
@@ -111,13 +139,23 @@ const PeakFlowScreen = ({navigation}) => {
       }
     }
 
-    console.log(maxIndex);
-    console.log(maxValue);
-
+    // Calcula a frequencia máxima com base no índice do maior espectro
     const frequency = ((maxIndex * sampleRate) / fftSize) * 2;
 
-    setMaxFrequency(frequency);
+    // Calcula a frequência utilizando uma fórmula de reta
+    let peakFlow = 0;
+    if (frequency > 5) {
+      peakFlow = 0.095 * frequency + 110;
+    }
+    setCalculatedPeakFlow(peakFlow.toFixed(2));
+
+    // Calcula o resultado do PFE obtido X PFE esperado
+    const calculatedResult = calculatePEF(user, peakFlow);
+    setResult(calculatedResult);
+
+    // Descarta o áudio gravado
     await discard();
+    setGenerating(false);
   };
 
   const discard = async () => {
@@ -130,51 +168,89 @@ const PeakFlowScreen = ({navigation}) => {
   };
 
   const renderRecordButton = () => {
-    if (!audioURI) {
+    if (!audioURI && !result) {
       return (
-        <Button disable={recording} onPress={startRecording}>
-          Iniciar gravação
-        </Button>
+        <>
+          <Paragraph>
+            Após pressionar o botão de gravação de áudio, você terá 3 segundos
+            para soprar o apito. Certifique-se de estar cerca de 10 cm de
+            distância do microfone do seu celular.
+          </Paragraph>
+          <Button disable={recording} onPress={startRecording}>
+            Iniciar gravação
+          </Button>
+        </>
       );
     }
   };
 
-  const renderGenerateButton = () => {
-    if (audioURI) {
-      return <Button onPress={generateResult}>Gerar resultado</Button>;
-    } else {
-      return null;
-    }
-  };
-
-  const renderDiscardButton = () => {
-    if (audioURI) {
+  const renderPreResultScreen = () => {
+    if (audioURI && !generating) {
       return (
-        <Button secondary onPress={discard}>
-          Descartar áudio
-        </Button>
+        <>
+          <Paragraph>
+            Certifique-se de que a gravação captou o som gerado pelo apito
+            pressionando o botão "Reproduzir áudio". Se estiver ok gere o
+            resultado. Caso o áudio tenha algum problema, descarte o áudio e
+            refaça o processo.
+          </Paragraph>
+          <Button disable={playing} onPress={playAudio}>
+            Reproduzir áudio
+          </Button>
+          <Button disable={playing} onPress={generateResult}>
+            Gerar resultado
+          </Button>
+          <Button secondary disable={playing} onPress={discard}>
+            Descartar
+          </Button>
+        </>
       );
     } else {
       return null;
     }
   };
 
-  const renderPlayButton = () => {
-    if (audioURI) {
-      return <Button onPress={playAudio}>Tocar áudio</Button>;
-    } else {
-      return null;
+  const renderResults = () => {
+    if (result) {
+      const {resultPercent, resultClass, resultExpectedPEF} = result;
+      return (
+        <>
+          <ResultCard
+            resultPercent={resultPercent}
+            resultClass={resultClass}
+            calculatedPeakFlow={calculatedPeakFlow}
+            expectedPeakFlow={resultExpectedPEF}
+          />
+          <Button
+            disable={recording}
+            onPress={() => {
+              setCalculatedPeakFlow(null);
+              setResult(null);
+            }}>
+            Refazer teste
+          </Button>
+        </>
+      );
+    }
+  };
+
+  const renderGeneratingResults = () => {
+    if (generating) {
+      return (
+        <>
+          <Paragraph>Gerando resultados...</Paragraph>
+        </>
+      );
     }
   };
 
   return (
     <CommonScreen navigation={navigation}>
       <Title>Medidor de Pico de Fluxo</Title>
-      {!audioURI && renderRecordButton()}
-      <Paragraph>Frequência máxima: {maxFrequency.toFixed(2)} Hz</Paragraph>
-      {renderGenerateButton()}
-      {renderPlayButton()}
-      {renderDiscardButton()}
+      {renderRecordButton()}
+      {renderPreResultScreen()}
+      {renderGeneratingResults()}
+      {renderResults()}
     </CommonScreen>
   );
 };

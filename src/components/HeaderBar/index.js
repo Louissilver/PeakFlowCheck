@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  Alert,
-} from 'react-native';
+import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {theme} from '../../styles/globalStyles';
-import {DrawerActions} from '@react-navigation/native';
 
 const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
   const navigation = useNavigation();

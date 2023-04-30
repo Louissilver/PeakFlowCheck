@@ -11,7 +11,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
   },
-  logo: {
+  headerName: {
     marginBottom: 10,
+    fontSize: 16,
   },
 });
