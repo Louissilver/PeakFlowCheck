@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import {TextLink} from '../../components/TextLink';
 import {inputs} from './inputs';
 import {parse} from 'date-fns';
 import {Input} from '../../components/Input';
+import loadingAnimation from '../../assets/loading.gif';
+import {getUserInformation} from '../../services/firestore';
+import {auth} from '../../config/firebase';
 
-const LoginSchema = Yup.object().shape({
+const AccountSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
-  date: Yup.date()
+  dateOfBirth: Yup.date()
     .required('A data de nascimento é obrigatória')
     .transform(function (value, originalValue, context) {
       if (context.isType(value)) return value;
@@ -34,67 +37,102 @@ const LoginSchema = Yup.object().shape({
 });
 
 const AccountScreen = ({navigation}) => {
-  return (
-    <CommonScreen navigation={navigation}>
-      <Title>Altere aqui os dados da sua conta</Title>
-      <Text style={styles.info}>
-        É obrigatório o preenchimento de todos os campos
-      </Text>
-      <View style={styles.container}>
-        <Formik
-          initialValues={{
-            completeName: '',
-            date: '',
-            height: '',
-            gender: '',
-            email: '',
-            password: '',
-          }}
-          validationSchema={LoginSchema}
-          onSubmit={values => console.log(values)}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
-            <>
-              <View style={styles.form}>
-                {inputs.map(({label, item, options}) => {
-                  return (
-                    <Input
-                      key={item}
-                      item={item}
-                      label={label}
-                      handleChange={handleChange}
-                      handleBlur={handleBlur}
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      options={options}
-                    />
-                  );
-                })}
-              </View>
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState({
+    completeName: '',
+    dateOfBirth: '',
+    height: '',
+    gender: '',
+    email: '',
+    password: '',
+  });
 
-              <TextLink
-                onPress={() => navigation.navigate('Nova senha')}
-                text="Quer redefinir sua senha?"
-                link="Clique aqui"
-              />
+  async function getUserData(uid) {
+    setLoading(true);
+    const userInfo = await getUserInformation(uid);
+    setUserData(userInfo);
+    setLoading(false);
+  }
 
-              <Button onPress={() => handleSubmit()}>Salvar</Button>
-              <Button secondary onPress={() => navigation.goBack()}>
-                Cancelar
-              </Button>
-            </>
-          )}
-        </Formik>
+  useEffect(() => {
+    const userState = auth.onAuthStateChanged(user => {
+      if (user) {
+        getUserData(user.uid);
+      }
+    });
+
+    return () => userState();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.animationContainer}>
+        <Image source={loadingAnimation} style={styles.image} />
       </View>
-    </CommonScreen>
-  );
+    );
+  } else {
+    return (
+      <CommonScreen navigation={navigation}>
+        <Title>Altere aqui os dados da sua conta</Title>
+        <Text style={styles.info}>
+          É obrigatório o preenchimento de todos os campos
+        </Text>
+        <View style={styles.container}>
+          <Formik
+            initialValues={{
+              completeName: userData.completeName,
+              dateOfBirth: userData.dateOfBirth,
+              height: userData.height,
+              gender: userData.gender,
+              email: userData.email,
+              password: userData.password,
+            }}
+            validationSchema={AccountSchema}
+            onSubmit={values => console.log(values)}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <>
+                <View style={styles.form}>
+                  {inputs.map(({label, item, options}) => {
+                    return (
+                      <Input
+                        key={item}
+                        item={item}
+                        label={label}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        values={values}
+                        errors={errors}
+                        touched={touched}
+                        options={options}
+                      />
+                    );
+                  })}
+                </View>
+
+                <TextLink
+                  onPress={() => navigation.navigate('Nova senha')}
+                  text="Quer redefinir sua senha?"
+                  link="Clique aqui"
+                />
+
+                <Button onPress={() => handleSubmit()}>Salvar</Button>
+                <Button secondary onPress={() => navigation.goBack()}>
+                  Cancelar
+                </Button>
+              </>
+            )}
+          </Formik>
+        </View>
+      </CommonScreen>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -112,6 +150,15 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: 20,
+  },
+  animationContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
 });
 

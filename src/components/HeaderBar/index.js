@@ -4,15 +4,16 @@ import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './styles';
 import {theme} from '../../styles/globalStyles';
+import {auth} from '../../config/firebase';
 
 const HeaderBar = ({title, isHome = false, isLoggedFeature = false}) => {
   const navigation = useNavigation();
 
   const handleLogout = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Login'}],
-    });
+    auth.signOut();
+    setTimeout(() => {
+      navigation.replace('Login');
+    }, 1000);
   };
 
   return (

@@ -13,10 +13,11 @@ import {inputs} from './inputs';
 import {parse} from 'date-fns';
 import {Input} from '../../components/Input';
 import {Paragraph} from '../../components/Paragraph';
+import {register} from '../../services/auth';
 
 const LoginSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
-  date: Yup.date()
+  dateOfBirth: Yup.date()
     .required('A data de nascimento é obrigatória')
     .transform(function (value, originalValue, context) {
       if (context.isType(value)) return value;
@@ -43,6 +44,15 @@ const LoginSchema = Yup.object().shape({
 });
 
 const SignUpScreen = ({navigation}) => {
+  async function execRegister(values) {
+    const result = await register(values);
+    if (result == 'error') {
+      Alert.alert('Não foi possível cadastrar o usuário.');
+      return;
+    }
+    navigation.replace('Logado');
+  }
+
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Bem vindo!</Title>
@@ -57,7 +67,7 @@ const SignUpScreen = ({navigation}) => {
           initialValues={{
             termsOfUse: false,
             completeName: '',
-            date: '',
+            dateOfBirth: '',
             height: '',
             gender: '',
             email: '',
@@ -116,7 +126,13 @@ const SignUpScreen = ({navigation}) => {
                 <Text style={styles.error}>{errors.termsOfUse}</Text>
               )}
 
-              <Button onPress={() => handleSubmit()}>Cadastrar</Button>
+              <Button
+                onPress={() => {
+                  handleSubmit();
+                  execRegister(values);
+                }}>
+                Cadastrar
+              </Button>
 
               <TextLink
                 onPress={() => navigation.navigate('Login')}

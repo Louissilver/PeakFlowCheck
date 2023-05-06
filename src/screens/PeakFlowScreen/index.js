@@ -11,12 +11,9 @@ import Sound from 'react-native-sound';
 import {ResultCard} from '../../components/ResultCard';
 import {Paragraph} from '../../components/Paragraph';
 import {calculatePEF} from '../../utils';
-
-const user = {
-  gender: 'Male',
-  age: 24,
-  height: 1.81,
-};
+import {auth} from '../../config/firebase';
+import {getUserInformation} from '../../services/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PeakFlowScreen = ({navigation}) => {
   const [recording, setRecording] = useState(false);
@@ -25,9 +22,29 @@ const PeakFlowScreen = ({navigation}) => {
   const [audioURI, setAudioURI] = useState(null);
   const [calculatedPeakFlow, setCalculatedPeakFlow] = useState(null);
   const [result, setResult] = useState(null);
+  const [userData, setUserData] = useState({
+    dateOfBirth: '',
+    height: '',
+    gender: '',
+  });
 
   const sampleRate = 44100;
   const recordingDuration = 3000;
+
+  async function getUserData(uid) {
+    const userInfo = await getUserInformation(uid);
+    setUserData(userInfo);
+  }
+
+  useEffect(() => {
+    const userState = auth.onAuthStateChanged(user => {
+      if (user) {
+        getUserData(user.uid);
+      }
+    });
+
+    return () => userState();
+  }, [result]);
 
   useEffect(() => {
     let recordingTimer;
@@ -150,7 +167,7 @@ const PeakFlowScreen = ({navigation}) => {
     setCalculatedPeakFlow(peakFlow.toFixed(2));
 
     // Calcula o resultado do PFE obtido X PFE esperado
-    const calculatedResult = calculatePEF(user, peakFlow);
+    const calculatedResult = calculatePEF(userData, peakFlow);
     setResult(calculatedResult);
 
     // Descarta o áudio gravado

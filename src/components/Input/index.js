@@ -16,8 +16,8 @@ const Input = ({
 }) => {
   let formatterValue = '';
 
-  if (item === 'date') {
-    formattedValue = values['date']
+  if (item === 'dateOfBirth') {
+    formattedValue = values['dateOfBirth']
       .replace(/\D/g, '')
       .replace(/(\d{2})(\d)/, '$1/$2')
       .replace(/(\d{2})(\d)/, '$1/$2')
@@ -70,11 +70,13 @@ const Input = ({
             ]}
             onChangeText={handleChange(item)}
             onBlur={handleBlur(item)}
-            value={item !== 'date' ? values[item] : formattedValue}
+            value={item !== 'dateOfBirth' ? values[item] : formattedValue}
             secureTextEntry={secureTextEntry}
-            maxLength={item === 'date' ? 10 : 50}
+            maxLength={item === 'dateOfBirth' ? 10 : 50}
             keyboardType={
-              item === 'date' || item === 'height' ? 'numeric' : 'default'
+              item === 'dateOfBirth' || item === 'height'
+                ? 'numeric'
+                : 'default'
             }
           />
           {errors[item] && touched[item] && (

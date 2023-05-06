@@ -1,6 +1,6 @@
 const inputs = [
   {label: 'Nome completo', item: 'completeName'},
-  {label: 'Data de nascimento', item: 'date'},
+  {label: 'Data de nascimento', item: 'dateOfBirth'},
   {label: 'Altura', item: 'height'},
   {
     label: 'Sexo',

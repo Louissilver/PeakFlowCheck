@@ -2,14 +2,15 @@ export const calculatePEF = (user, measuredPEF) => {
   let expectedPEF = 0;
   let percentMeasure = 0;
   let finalResult = '';
+  const age = calculateAge(user.dateOfBirth);
 
   // Cálculo do Pico de Fluxo Expiratório esperado
 
-  if (user.age > 15) {
-    if (user.gender == 'Male') {
-      expectedPEF = (user.height * 5.48 + 1.58 - user.age * 0.041) * 60;
+  if (age > 15) {
+    if (user.gender == 'masculino') {
+      expectedPEF = (user.height * 5.48 + 1.58 - age * 0.041) * 60;
     } else {
-      expectedPEF = (user.height * 3.72 + 2.24 - user.age * 0.03) * 60;
+      expectedPEF = (user.height * 3.72 + 2.24 - age * 0.03) * 60;
     }
   } else {
     expectedPEF = (user.height * 100 - 100) * 5 + 100;
@@ -36,4 +37,23 @@ export const calculatePEF = (user, measuredPEF) => {
   };
 
   return results;
+};
+
+export const calculateAge = dateString => {
+  const today = new Date();
+  const [day, month, year] = dateString.split('/');
+
+  const birthDate = new Date(`${year}-${month}-${day}`);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
+    age--;
+  }
+
+  return age;
 };
