@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  itemContainer: {
+  headerContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -15,17 +15,35 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.grey,
   },
-  itemData: {
+  itemContainer: {
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.grey,
+  },
+  resultContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  date: {
     flex: 1,
     marginRight: 5,
   },
-  itemClassificacao: {
+  resultClass: {
     width: 100,
     textAlign: 'center',
     marginRight: 10,
     fontWeight: 'bold',
   },
-  itemPFE: {
+  peakflow: {
+    width: 100,
+    textAlign: 'center',
+  },
+  percent: {
     width: 100,
     textAlign: 'right',
   },

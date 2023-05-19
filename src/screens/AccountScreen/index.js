@@ -11,7 +11,7 @@ import {inputs} from './inputs';
 import {parse} from 'date-fns';
 import {Input} from '../../components/Input';
 import loadingAnimation from '../../assets/loading.gif';
-import {getUserInformation} from '../../services/firestore';
+import {getUserInformation} from '../../services/userInformation';
 import {auth} from '../../config/firebase';
 
 const AccountSchema = Yup.object().shape({

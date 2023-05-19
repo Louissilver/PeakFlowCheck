@@ -12,15 +12,16 @@ import {ResultCard} from '../../components/ResultCard';
 import {Paragraph} from '../../components/Paragraph';
 import {calculatePEF} from '../../utils';
 import {auth} from '../../config/firebase';
-import {getUserInformation} from '../../services/firestore';
+import {getUserInformation} from '../../services/userInformation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { saveTestResult } from '../../services/testResults';
 
 const PeakFlowScreen = ({navigation}) => {
   const [recording, setRecording] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [audioURI, setAudioURI] = useState(null);
-  const [calculatedPeakFlow, setCalculatedPeakFlow] = useState(null);
+  const [measuredPeakFlow, setMeasuredPeakFlow] = useState(null);
   const [result, setResult] = useState(null);
   const [userData, setUserData] = useState({
     dateOfBirth: '',
@@ -34,6 +35,13 @@ const PeakFlowScreen = ({navigation}) => {
   async function getUserData(uid) {
     const userInfo = await getUserInformation(uid);
     setUserData(userInfo);
+  }
+
+  async function execSaveTestResult(finalResult) {
+    const result = await saveTestResult(finalResult);
+    if (result == 'error') {
+      return;
+    }
   }
 
   useEffect(() => {
@@ -164,12 +172,13 @@ const PeakFlowScreen = ({navigation}) => {
     if (frequency > 5) {
       peakFlow = 0.095 * frequency + 110;
     }
-    setCalculatedPeakFlow(peakFlow.toFixed(2));
+    setMeasuredPeakFlow(peakFlow.toFixed(2));
 
     // Calcula o resultado do PFE obtido X PFE esperado
     const calculatedResult = calculatePEF(userData, peakFlow);
     setResult(calculatedResult);
-
+    await execSaveTestResult(calculatedResult);
+    
     // Descarta o áudio gravado
     await discard();
     setGenerating(false);
@@ -229,19 +238,19 @@ const PeakFlowScreen = ({navigation}) => {
 
   const renderResults = () => {
     if (result) {
-      const {resultPercent, resultClass, resultExpectedPEF} = result;
+      const {resultPercent, resultClass, expectedPeakflow} = result;
       return (
         <>
           <ResultCard
             resultPercent={resultPercent}
             resultClass={resultClass}
-            calculatedPeakFlow={calculatedPeakFlow}
-            expectedPeakFlow={resultExpectedPEF}
+            calculatedPeakFlow={measuredPeakFlow}
+            expectedPeakFlow={expectedPeakflow}
           />
           <Button
             disable={recording}
             onPress={() => {
-              setCalculatedPeakFlow(null);
+              setMeasuredPeakFlow(null);
               setResult(null);
             }}>
             Refazer teste

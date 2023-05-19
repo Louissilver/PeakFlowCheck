@@ -33,7 +33,8 @@ export const calculatePEF = (user, measuredPEF) => {
   const results = {
     resultPercent: percentMeasure.toFixed(2),
     resultClass: finalResult,
-    resultExpectedPEF: expectedPEF.toFixed(2),
+    expectedPeakflow: expectedPEF.toFixed(2),
+    measuredPeakflow: measuredPEF.toFixed(2),
   };
 
   return results;

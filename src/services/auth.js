@@ -5,8 +5,6 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import {addDoc, collection} from '@firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserInformation} from './firestore';
 
 function firebaseErrors(error) {
   let message = '';
@@ -35,7 +33,7 @@ export async function register(data) {
   )
     .then(userData => {
       addDoc(collection(db, 'userInformation'), {
-        userId: userData.user.uid,
+        userId: userData?.user?.uid,
         completeName: data.completeName.trim(),
         dateOfBirth: data.dateOfBirth,
         email: userData.user.email,

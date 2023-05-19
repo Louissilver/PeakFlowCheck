@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import styles from './styles';
-import {getUserInformation} from '../../services/firestore';
+import {getUserInformation} from '../../services/userInformation';
 import {auth} from '../../config/firebase';
 
 const Header = ({title, isHome = false}) => {
