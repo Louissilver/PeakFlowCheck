@@ -31,18 +31,21 @@ const ListItem = ({
   );
 };
 
+const ListHeader = () => {
+  return (
+    <View style={styles.headerContainer}>
+      <Text style={[styles.resultClass, {fontWeight: 'bold'}]}>
+        Classificação
+      </Text>
+      <Text style={[styles.percent, {fontWeight: 'bold'}]}>Resultado (%)</Text>
+      <Text style={[styles.peakflow, {fontWeight: 'bold'}]}>PFE (L/min)</Text>
+    </View>
+  );
+};
+
 const ListResult = ({data}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={[styles.resultClass, {fontWeight: 'bold'}]}>
-          Classificação
-        </Text>
-        <Text style={[styles.percent, {fontWeight: 'bold'}]}>
-          Resultado (%)
-        </Text>
-        <Text style={[styles.peakflow, {fontWeight: 'bold'}]}>PFE (L/min)</Text>
-      </View>
       {data.map((item, index) => (
         <ListItem
           resultDateTime={item.resultDateTime}
@@ -56,4 +59,4 @@ const ListResult = ({data}) => {
   );
 };
 
-export {ListResult};
+export {ListResult, ListHeader};

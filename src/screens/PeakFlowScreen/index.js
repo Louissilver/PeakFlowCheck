@@ -13,8 +13,7 @@ import {Paragraph} from '../../components/Paragraph';
 import {calculatePEF} from '../../utils';
 import {auth} from '../../config/firebase';
 import {getUserInformation} from '../../services/userInformation';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { saveTestResult } from '../../services/testResults';
+import {saveTestResult} from '../../services/testResults';
 
 const PeakFlowScreen = ({navigation}) => {
   const [recording, setRecording] = useState(false);
@@ -178,7 +177,7 @@ const PeakFlowScreen = ({navigation}) => {
     const calculatedResult = calculatePEF(userData, peakFlow);
     setResult(calculatedResult);
     await execSaveTestResult(calculatedResult);
-    
+
     // Descarta o áudio gravado
     await discard();
     setGenerating(false);

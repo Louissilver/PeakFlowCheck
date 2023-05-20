@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
-import {ListResult} from '../../components/ListResult';
+import {ListResult, ListHeader} from '../../components/ListResult';
 import ResultsEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {View, StyleSheet} from 'react-native';
@@ -11,7 +11,7 @@ import {
   getTestResults,
   getTestResultsInRealTime,
 } from '../../services/testResults';
-import {RefreshControl, ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ResultsScreen = ({navigation}) => {
   const [data, setData] = useState([]);
@@ -29,29 +29,38 @@ const ResultsScreen = ({navigation}) => {
     getTestResultsInRealTime(setData);
   }, []);
 
-  if (refreshing) {
-    return <Paragraph>Carregando lista de resultados...</Paragraph>;
-  }
+  useEffect(() => {
+    const resetResult = navigation.addListener('focus', () => {
+      loadResultData();
+    });
+    return resetResult;
+  }, [navigation]);
 
   return (
     <CommonScreen navigation={navigation}>
       <Title>Veja aqui os resultados anteriores de seus testes de PFE</Title>
-      {/* <ResultsEmptyChartImage width={352} height={250} /> */}
-      <ScrollView
-        style={{width: '100%'}}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={loadResultData} />
-        }>
-        <View style={styles.container}>
-          <ListResult data={data} />
-        </View>
-      </ScrollView>
-      <Button onPress={() => console.log('Exibir mais itens')}>Ver mais</Button>
-      <Button
+      {!data && <ResultsEmptyChartImage width={352} height={250} />}
+      {!refreshing ? (
+        <>
+          <Paragraph textAlign="center">
+            Role a lista para baixo para ver mais resultados
+          </Paragraph>
+          <ListHeader />
+          <ScrollView style={{width: '100%', height: 160, marginBottom: 30}}>
+            <View style={styles.container}>
+              <ListResult data={data} />
+            </View>
+          </ScrollView>
+        </>
+      ) : (
+        <Paragraph>Carregando lista de resultados...</Paragraph>
+      )}
+      <Button onPress={loadResultData}>Atualizar</Button>
+      {/* <Button
         secondary
         onPress={() => navigation.navigate('Exportar resultados')}>
         Exportar lista
-      </Button>
+      </Button> */}
     </CommonScreen>
   );
 };

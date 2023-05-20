@@ -25,6 +25,7 @@
     "firebase": "^9.21.0",
     "formik": "^2.2.9",
     "metro": "^0.75.1",
+    "moment": "^2.29.4",
     "react": "18.2.0",
     "react-native": "0.71.3",
     "react-native-audio-record": "^0.2.2",

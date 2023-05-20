@@ -2,15 +2,15 @@ import {auth, db} from '../config/firebase';
 import {
   collection,
   addDoc,
-  doc,
-  updateDoc,
-  getDoc,
   query,
   where,
+  orderBy,
   getDocs,
-  Timestamp,
+  limit,
+  onSnapshot,
 } from 'firebase/firestore';
 import {Alert} from 'react-native';
+import moment from 'moment';
 
 export async function saveTestResult(data) {
   try {
@@ -20,7 +20,7 @@ export async function saveTestResult(data) {
       resultClass: data.resultClass,
       expectedPeakflow: data.expectedPeakflow,
       measuredPeakflow: data.measuredPeakflow,
-      resultDateTime: new Date().toLocaleString(),
+      resultDateTime: moment().format('DD/MM/YYYY, HH:mm:ss'),
     });
     return 'ok';
   } catch (error) {
@@ -31,16 +31,21 @@ export async function saveTestResult(data) {
 
 export async function getTestResults() {
   try {
-    const querySnapshot = await getDocs(collection(db, 'testResults'));
-
     let results = [];
 
+    const q = query(
+      collection(db, 'testResults'),
+      where('userId', '==', auth.currentUser.uid),
+      orderBy('resultDateTime', 'desc'),
+      limit(20),
+    );
+
+    const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
-      if (doc.data().userId == auth.currentUser.uid) {
-        let result = {id: doc.id, ...doc.data()};
-        results.push(result);
-      }
+      let result = {id: doc.id, ...doc.data()};
+      results.push(result);
     });
+
     return results;
   } catch (error) {
     Alert.alert('Não foi possível encontrar os resultados do usuário.');
@@ -50,15 +55,12 @@ export async function getTestResults() {
 }
 
 export async function getTestResultsInRealTime(setResults) {
-  const ref = query(collection(db, 'testResults'));
-
   const testResults = [];
 
-  onSnapshot(ref, querySnapshot => {
+  onSnapshot(collection(db, 'testResults'), querySnapshot => {
     querySnapshot.forEach(doc => {
-      if (doc.data().userId == auth.currentUser.uid) {
-        testResults.push({id: doc.id, ...doc.data()});
-      }
+      let result = {id: doc.id, ...doc.data()};
+      testResults.push(result);
     });
     setResults(testResults);
   });
