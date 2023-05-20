@@ -1,14 +1,15 @@
-import {db} from '../config/firebase';
+import {auth, db} from '../config/firebase';
 import {
   collection,
   addDoc,
   doc,
   updateDoc,
-  getDoc,
   query,
   where,
   getDocs,
+  limit,
 } from 'firebase/firestore';
+import {updateEmail} from 'firebase/auth';
 import {Alert} from 'react-native';
 
 export async function saveUserInformation(data) {
@@ -21,11 +22,12 @@ export async function saveUserInformation(data) {
   }
 }
 
-export async function getUserInformation(id) {
+export async function getUserInformation() {
   try {
     const q = query(
       collection(db, 'userInformation'),
-      where('userId', '==', id),
+      where('userId', '==', auth.currentUser.uid),
+      limit(1),
     );
     let userInfo;
     const querySnapshot = await getDocs(q);
@@ -42,10 +44,33 @@ export async function getUserInformation(id) {
   }
 }
 
-export async function updateUserInformation(id, data) {
+export async function updateUserInformation(data) {
   try {
-    const docRef = doc(db, 'userInformation', id);
-    await updateDoc(docRef, data);
+    let user;
+
+    const q = query(
+      collection(db, 'userInformation'),
+      where('userId', '==', auth.currentUser.uid),
+      limit(1),
+    );
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(doc => {
+      let result = {id: doc.id, ...doc.data()};
+      user = result;
+    });
+
+    const docRef = doc(db, 'userInformation', user.id);
+    updateEmail(auth.currentUser, data.email).then(() => {
+      console.log('Sucesso');
+    });
+    await updateDoc(docRef, {
+      completeName: data.completeName,
+      dateOfBirth: data.dateOfBirth,
+      height: data.height,
+      gender: data.gender,
+      email: data.email,
+    });
     return 'ok';
   } catch (error) {
     console.log(error);

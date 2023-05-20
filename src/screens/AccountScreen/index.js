@@ -5,13 +5,16 @@ import CommonScreen from '../../components/CommonScreen';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, Alert} from 'react-native';
 import {TextLink} from '../../components/TextLink';
 import {inputs} from './inputs';
 import {parse} from 'date-fns';
 import {Input} from '../../components/Input';
 import loadingAnimation from '../../assets/loading.gif';
-import {getUserInformation} from '../../services/userInformation';
+import {
+  getUserInformation,
+  updateUserInformation,
+} from '../../services/userInformation';
 import {auth} from '../../config/firebase';
 
 const AccountSchema = Yup.object().shape({
@@ -33,7 +36,6 @@ const AccountSchema = Yup.object().shape({
       'O sexo deve ser "masculino" ou "feminino"',
     ),
   email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
-  password: Yup.string().required('Campo obrigatório'),
 });
 
 const AccountScreen = ({navigation}) => {
@@ -44,25 +46,33 @@ const AccountScreen = ({navigation}) => {
     height: '',
     gender: '',
     email: '',
-    password: '',
   });
 
-  async function getUserData(uid) {
+  async function getUserData() {
     setLoading(true);
-    const userInfo = await getUserInformation(uid);
+    const userInfo = await getUserInformation();
     setUserData(userInfo);
     setLoading(false);
   }
 
-  useEffect(() => {
-    const userState = auth.onAuthStateChanged(user => {
-      if (user) {
-        getUserData(user.uid);
-      }
-    });
+  async function updateUserData(values) {
+    const result = await updateUserInformation(values);
+    if (result == 'error') {
+      Alert.alert('Não foi possível atualizar os dados do usuário.');
+      return;
+    }
+    auth.signOut();
+    setTimeout(() => {
+      navigation.replace('Login');
+    }, 1000);
+  }
 
-    return () => userState();
-  }, []);
+  useEffect(() => {
+    const resetResult = navigation.addListener('focus', () => {
+      getUserData();
+    });
+    return resetResult;
+  }, [navigation]);
 
   if (loading) {
     return (
@@ -85,10 +95,12 @@ const AccountScreen = ({navigation}) => {
               height: userData.height,
               gender: userData.gender,
               email: userData.email,
-              password: userData.password,
             }}
             validationSchema={AccountSchema}
-            onSubmit={values => console.log(values)}>
+            onSubmit={values => {
+              console.log(values);
+              updateUserData(values);
+            }}>
             {({
               handleChange,
               handleBlur,
@@ -99,7 +111,7 @@ const AccountScreen = ({navigation}) => {
             }) => (
               <>
                 <View style={styles.form}>
-                  {inputs.map(({label, item, options}) => {
+                  {inputs.map(({label, item, options, secureTextEntry}) => {
                     return (
                       <Input
                         key={item}
@@ -111,6 +123,7 @@ const AccountScreen = ({navigation}) => {
                         errors={errors}
                         touched={touched}
                         options={options}
+                        secureTextEntry={secureTextEntry}
                       />
                     );
                   })}
@@ -122,7 +135,12 @@ const AccountScreen = ({navigation}) => {
                   link="Clique aqui"
                 />
 
-                <Button onPress={() => handleSubmit()}>Salvar</Button>
+                <Button
+                  onPress={() => {
+                    handleSubmit();
+                  }}>
+                  Salvar
+                </Button>
                 <Button secondary onPress={() => navigation.goBack()}>
                   Cancelar
                 </Button>

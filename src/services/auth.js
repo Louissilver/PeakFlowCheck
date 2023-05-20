@@ -33,7 +33,7 @@ export async function register(data) {
   )
     .then(userData => {
       addDoc(collection(db, 'userInformation'), {
-        userId: userData?.user?.uid,
+        userId: userData.user.uid,
         completeName: data.completeName.trim(),
         dateOfBirth: data.dateOfBirth,
         email: userData.user.email,

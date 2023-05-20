@@ -31,8 +31,8 @@ const PeakFlowScreen = ({navigation}) => {
   const sampleRate = 44100;
   const recordingDuration = 3000;
 
-  async function getUserData(uid) {
-    const userInfo = await getUserInformation(uid);
+  async function getUserData() {
+    const userInfo = await getUserInformation();
     setUserData(userInfo);
   }
 

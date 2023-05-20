@@ -10,7 +10,7 @@ const Header = ({title, isHome = false}) => {
   const navigation = useNavigation();
 
   async function getUserData(uid) {
-    const userInfo = await getUserInformation(uid);
+    const userInfo = await getUserInformation();
     setUserData(userInfo);
   }
 

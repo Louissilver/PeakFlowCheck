@@ -75,7 +75,10 @@ const SignUpScreen = ({navigation}) => {
             passConfirm: '',
           }}
           validationSchema={LoginSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => {
+            console.log(values);
+            execRegister(values);
+          }}>
           {({
             handleChange,
             handleBlur,
@@ -129,7 +132,6 @@ const SignUpScreen = ({navigation}) => {
               <Button
                 onPress={() => {
                   handleSubmit();
-                  execRegister(values);
                 }}>
                 Cadastrar
               </Button>
