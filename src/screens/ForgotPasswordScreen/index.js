@@ -4,17 +4,36 @@ import {Button} from '../../components/Button';
 import {Paragraph} from '../../components/Paragraph';
 import ForgotPasswordImage from '../../assets/undraw_contact_us_re_4qqt.svg';
 import CommonScreen from '../../components/CommonScreen';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {Input} from '../../components/Input';
 import {theme} from '../../styles/globalStyles';
+import {resetPasswordEmail} from '../../services/auth';
+import {auth} from '../../config/firebase';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('E-mail inválido').required('Campo obrigatório'),
 });
 
 const ForgotPasswordScreen = ({navigation}) => {
+  async function sendPasswordEmail(email) {
+    const result = await resetPasswordEmail(email);
+    if (result === 'error') {
+      Alert.alert('Erro', 'Não foi possível enviar o e-mail.');
+      return;
+    }
+    Alert.alert(
+      'Sucesso',
+      `E-mail para redefinição de senha enviado para ${email}.`,
+    );
+    if (auth.currentUser) {
+      navigation.replace('Logado');
+    } else {
+      navigation.replace('Login');
+    }
+  }
+
   return (
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Solicite aqui a uma nova senha</Title>
@@ -32,7 +51,10 @@ const ForgotPasswordScreen = ({navigation}) => {
             email: '',
           }}
           validationSchema={LoginSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => {
+            console.log('aqui');
+            sendPasswordEmail(values.email);
+          }}>
           {({
             handleChange,
             handleBlur,
@@ -57,7 +79,6 @@ const ForgotPasswordScreen = ({navigation}) => {
               <Button
                 onPress={() => {
                   handleSubmit();
-                  navigation.navigate('Redefinição de senha');
                 }}>
                 Enviar
               </Button>

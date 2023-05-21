@@ -3,6 +3,9 @@ export const calculatePEF = (user, measuredPEF) => {
   let percentMeasure = 0;
   let finalResult = '';
   const age = calculateAge(user.dateOfBirth);
+  console.log('Age: ', age);
+  console.log('Gender: ', user.gender);
+  console.log('Height: ', user.height);
 
   // Cálculo do Pico de Fluxo Expiratório esperado
 
@@ -58,18 +61,3 @@ export const calculateAge = dateString => {
 
   return age;
 };
-
-function compareDates(a, b) {
-  // Converte as datas/horas de texto em objetos Date
-  const dateA = new Date(a.dataHora);
-  const dateB = new Date(b.dataHora);
-
-  // Compara as datas/horas
-  if (dateA < dateB) {
-    return -1;
-  }
-  if (dateA > dateB) {
-    return 1;
-  }
-  return 0;
-}

@@ -8,23 +8,24 @@ const ListItem = ({
   resultPercent,
   measuredPeakflow,
 }) => {
-  backgroundColorLine = '';
-  if (resultClass == 'Sinal amarelo') {
-    backgroundColorLine = '#FFD700';
-  } else if (resultClass == 'Sinal verde') {
-    backgroundColorLine = '#00FF7F';
+  let classColor = '';
+  if (resultClass === 'Sinal amarelo') {
+    classColor = '#FFD700';
+  } else if (resultClass === 'Sinal verde') {
+    classColor = '#00FF7F';
   } else {
-    backgroundColorLine = '#FD6B6B';
+    classColor = '#FD6B6B';
   }
   return (
-    <View
-      style={[{...styles.itemContainer, backgroundColor: backgroundColorLine}]}>
+    <View style={styles.itemContainer}>
       <View style={styles.resultContainer}>
         <Text style={styles.date}>{resultDateTime}</Text>
       </View>
       <View style={styles.resultContainer}>
-        <Text style={styles.resultClass}>{resultClass}</Text>
-        <Text style={styles.percent}>{resultPercent}</Text>
+        <Text style={[{...styles.resultClass}, {backgroundColor: classColor}]}>
+          {resultClass}
+        </Text>
+        <Text style={styles.percent}>{resultPercent}%</Text>
         <Text style={styles.peakflow}>{measuredPeakflow}</Text>
       </View>
     </View>
@@ -37,7 +38,7 @@ const ListHeader = () => {
       <Text style={[styles.resultClass, {fontWeight: 'bold'}]}>
         Classificação
       </Text>
-      <Text style={[styles.percent, {fontWeight: 'bold'}]}>Resultado (%)</Text>
+      <Text style={[styles.percent, {fontWeight: 'bold'}]}>Resultado</Text>
       <Text style={[styles.peakflow, {fontWeight: 'bold'}]}>PFE (L/min)</Text>
     </View>
   );

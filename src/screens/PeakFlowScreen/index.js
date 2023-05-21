@@ -37,8 +37,8 @@ const PeakFlowScreen = ({navigation}) => {
   }
 
   async function execSaveTestResult(finalResult) {
-    const result = await saveTestResult(finalResult);
-    if (result == 'error') {
+    const saveResult = await saveTestResult(finalResult);
+    if (saveResult === 'error') {
       return;
     }
   }
@@ -68,6 +68,8 @@ const PeakFlowScreen = ({navigation}) => {
   useEffect(() => {
     const resetResult = navigation.addListener('focus', () => {
       setResult(null);
+      setAudioURI(null);
+      setMeasuredPeakFlow(null);
     });
     return resetResult;
   }, [navigation]);

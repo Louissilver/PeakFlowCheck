@@ -16,6 +16,7 @@ import {
   updateUserInformation,
 } from '../../services/userInformation';
 import {auth} from '../../config/firebase';
+import {resetPasswordEmail} from '../../services/auth';
 
 const AccountSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
@@ -57,14 +58,31 @@ const AccountScreen = ({navigation}) => {
 
   async function updateUserData(values) {
     const result = await updateUserInformation(values);
-    if (result == 'error') {
-      Alert.alert('Não foi possível atualizar os dados do usuário.');
+    if (result === 'error') {
+      Alert.alert('Erro', 'Não foi possível atualizar os dados do usuário.');
       return;
     }
     auth.signOut();
     setTimeout(() => {
       navigation.replace('Login');
     }, 1000);
+  }
+
+  async function sendPasswordEmail(email) {
+    const result = await resetPasswordEmail(email);
+    if (result === 'error') {
+      Alert.alert('Erro', 'Não foi possível enviar o e-mail.');
+      return;
+    }
+    Alert.alert(
+      'Sucesso',
+      `E-mail para redefinição de senha enviado para ${email}.`,
+    );
+    if (auth.currentUser) {
+      navigation.replace('Logado');
+    } else {
+      navigation.replace('Login');
+    }
   }
 
   useEffect(() => {
@@ -130,7 +148,7 @@ const AccountScreen = ({navigation}) => {
                 </View>
 
                 <TextLink
-                  onPress={() => navigation.navigate('Nova senha')}
+                  onPress={() => sendPasswordEmail(auth.currentUser.email)}
                   text="Quer redefinir sua senha?"
                   link="Clique aqui"
                 />

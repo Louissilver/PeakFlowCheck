@@ -2,11 +2,10 @@ import React from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
-import {useNavigation} from '@react-navigation/core';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Alert} from 'react-native';
 import {TextLink} from '../../components/TextLink';
 import {CheckBox} from 'react-native-elements';
 import {inputs} from './inputs';
@@ -20,7 +19,9 @@ const LoginSchema = Yup.object().shape({
   dateOfBirth: Yup.date()
     .required('A data de nascimento é obrigatória')
     .transform(function (value, originalValue, context) {
-      if (context.isType(value)) return value;
+      if (context.isType(value)) {
+        return value;
+      }
       return parse(originalValue, 'dd/MM/yyyy', new Date());
     }),
   height: Yup.number()
@@ -46,8 +47,8 @@ const LoginSchema = Yup.object().shape({
 const SignUpScreen = ({navigation}) => {
   async function execRegister(values) {
     const result = await register(values);
-    if (result == 'error') {
-      Alert.alert('Não foi possível cadastrar o usuário.');
+    if (result === 'error') {
+      Alert.alert('Erro', 'Não foi possível cadastrar o usuário.');
       return;
     }
     navigation.replace('Logado');
@@ -76,7 +77,6 @@ const SignUpScreen = ({navigation}) => {
           }}
           validationSchema={LoginSchema}
           onSubmit={values => {
-            console.log(values);
             execRegister(values);
           }}>
           {({

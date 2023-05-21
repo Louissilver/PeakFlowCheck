@@ -37,7 +37,7 @@ export async function getUserInformation() {
     if (userInfo) {
       return userInfo;
     }
-    Alert.alert('Não foi possível encontrar os dados do usuário.');
+    Alert.alert('Erro', 'Não foi possível encontrar os dados do usuário.');
   } catch (error) {
     console.log(error);
     return 'error';

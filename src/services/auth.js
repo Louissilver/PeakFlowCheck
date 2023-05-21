@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   AuthErrorCodes,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import {addDoc, collection} from '@firebase/firestore';
 
@@ -60,4 +61,16 @@ export async function login(email, password) {
     });
 
   return result;
+}
+
+export async function resetPasswordEmail(email) {
+  auth.languageCode = 'pt';
+  await sendPasswordResetEmail(auth, email)
+    .then(() => {
+      return 'success';
+    })
+    .catch(error => {
+      console.log(error);
+      return 'error';
+    });
 }

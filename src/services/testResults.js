@@ -48,7 +48,7 @@ export async function getTestResults() {
 
     return results;
   } catch (error) {
-    Alert.alert('Não foi possível encontrar os resultados do usuário.');
+    Alert.alert('Erro', 'Não foi possível encontrar os resultados do usuário.');
     console.log(error);
     return [];
   }

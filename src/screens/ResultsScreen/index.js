@@ -32,6 +32,7 @@ const ResultsScreen = ({navigation}) => {
   useEffect(() => {
     const resetResult = navigation.addListener('focus', () => {
       loadResultData();
+      getTestResultsInRealTime(setData);
     });
     return resetResult;
   }, [navigation]);

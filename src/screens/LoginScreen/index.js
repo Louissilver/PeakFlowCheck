@@ -36,7 +36,10 @@ const LoginScreen = ({navigation}) => {
   async function execLogin(values) {
     const result = await login(values.email, values.password);
     if (result == 'error') {
-      Alert.alert('E-mail ou senha não conferem.\nPor favor, tente novamente.');
+      Alert.alert(
+        'Erro',
+        'E-mail ou senha não conferem.\nPor favor, tente novamente.',
+      );
       return;
     }
 
