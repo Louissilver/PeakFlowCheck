@@ -52,7 +52,6 @@ const ForgotPasswordScreen = ({navigation}) => {
           }}
           validationSchema={LoginSchema}
           onSubmit={values => {
-            console.log('aqui');
             sendPasswordEmail(values.email);
           }}>
           {({

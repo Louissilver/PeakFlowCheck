@@ -3,9 +3,6 @@ export const calculatePEF = (user, measuredPEF) => {
   let percentMeasure = 0;
   let finalResult = '';
   const age = calculateAge(user.dateOfBirth);
-  console.log('Age: ', age);
-  console.log('Gender: ', user.gender);
-  console.log('Height: ', user.height);
 
   // Cálculo do Pico de Fluxo Expiratório esperado
 

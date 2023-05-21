@@ -28,7 +28,10 @@ const HomeScreen = ({navigation}) => {
       parseFloat(resultPercent),
     );
     const resultDateArray = [...resultsFirestore].map(({resultDateTime}) => {
-      const datePart = resultDateTime.substring(0, resultDateTime.indexOf(','));
+      const datePart = resultDateTime.substring(
+        0,
+        resultDateTime.lastIndexOf('/'),
+      );
 
       // Obter a parte do horário (hh:mm)
       const timePart = resultDateTime.substring(
