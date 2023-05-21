@@ -11,5 +11,6 @@ export default StyleSheet.create({
     marginVertical: 20,
     letterSpacing: 2,
     paddingHorizontal: 21,
+    minWidth: '100%',
   },
 });

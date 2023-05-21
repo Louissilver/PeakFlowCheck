@@ -63,7 +63,9 @@ const SignUpScreen = ({navigation}) => {
     <CommonScreen navigation={navigation} isLoggedFeature={false}>
       <Title>Bem vindo!</Title>
       <Paragraph>
-        Lörem ipsum ninde låra huruvida gur för plakell el. Mädose smartboard.{' '}
+        Preencha os campos abaixo para se cadastrar e utilizar as
+        funcionalidades do aplicativo. Mas lembre-se: para medir o PFE é
+        necessário possuir o Apito de Vórtice!
       </Paragraph>
       <Text style={styles.info}>
         É obrigatório o preenchimento de todos os campos
