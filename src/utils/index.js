@@ -45,9 +45,7 @@ export const calculatePEF = (user, measuredPEF) => {
 
 export const calculateAge = dateString => {
   const today = new Date();
-  const [day, month, year] = dateString.split('/');
-
-  const birthDate = new Date(`${year}-${month}-${day}`);
+  const birthDate = new Date(dateString);
 
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -60,4 +58,11 @@ export const calculateAge = dateString => {
   }
 
   return age;
+};
+
+export const prettyifyDate = date => {
+  if (date) {
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  }
+  return '';
 };

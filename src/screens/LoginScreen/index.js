@@ -35,7 +35,7 @@ const LoginScreen = ({navigation}) => {
 
   async function execLogin(values) {
     const result = await login(values.email, values.password);
-    if (result == 'error') {
+    if (result === 'error') {
       Alert.alert(
         'Erro',
         'E-mail ou senha não conferem.\nPor favor, tente novamente.',
@@ -62,7 +62,7 @@ const LoginScreen = ({navigation}) => {
         <Formik
           initialValues={{email: '', password: ''}}
           validationSchema={LoginSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values => console.log('Success Login')}>
           {({
             handleChange,
             handleBlur,

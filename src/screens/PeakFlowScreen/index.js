@@ -33,7 +33,11 @@ const PeakFlowScreen = ({navigation}) => {
 
   async function getUserData() {
     const userInfo = await getUserInformation();
-    setUserData(userInfo);
+    setUserData({
+      dateOfBirth: userInfo.dateOfBirth.toDate(),
+      height: userInfo.height,
+      gender: userInfo.gender,
+    });
   }
 
   async function execSaveTestResult(finalResult) {

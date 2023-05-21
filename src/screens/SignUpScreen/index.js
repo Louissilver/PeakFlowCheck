@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
@@ -7,12 +7,15 @@ import * as Yup from 'yup';
 import {theme} from '../../styles/globalStyles';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {TextLink} from '../../components/TextLink';
-import {CheckBox} from 'react-native-elements';
+import {CheckBox, Icon} from 'react-native-elements';
 import {inputs} from './inputs';
 import {parse} from 'date-fns';
 import {Input} from '../../components/Input';
 import {Paragraph} from '../../components/Paragraph';
 import {register} from '../../services/auth';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {TextInput} from 'react-native-gesture-handler';
+import {prettyifyDate} from '../../utils';
 
 const LoginSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
@@ -45,6 +48,8 @@ const LoginSchema = Yup.object().shape({
 });
 
 const SignUpScreen = ({navigation}) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   async function execRegister(values) {
     const result = await register(values);
     if (result === 'error') {
@@ -68,7 +73,7 @@ const SignUpScreen = ({navigation}) => {
           initialValues={{
             termsOfUse: false,
             completeName: '',
-            dateOfBirth: '',
+            dateOfBirth: new Date(),
             height: '',
             gender: '',
             email: '',
@@ -90,6 +95,31 @@ const SignUpScreen = ({navigation}) => {
           }) => (
             <>
               <View style={styles.form}>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Data de nascimento</Text>
+                  <TextInput
+                    style={[styles.input]}
+                    value={prettyifyDate(values.dateOfBirth)}
+                    onBlur={() => {
+                      handleBlur('dateOfBirth');
+                    }}
+                    onPressIn={() => setShowDatePicker(true)}
+                  />
+                  {errors.dateOfBirth && touched.dateOfBirth && (
+                    <Text style={styles.error}>{errors.dateOfBirth}</Text>
+                  )}
+                </View>
+
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={new Date(values.dateOfBirth)}
+                    mode="date"
+                    onChange={(_, date) => {
+                      setShowDatePicker(false);
+                      handleChange('dateOfBirth')(`${date}`);
+                    }}
+                  />
+                )}
                 {inputs.map(({label, item, options, secureTextEntry}) => {
                   return (
                     <Input
@@ -171,6 +201,27 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: 20,
+  },
+  datePickerStyle: {
+    width: 200,
+    marginTop: 20,
+  },
+  inputContainer: {
+    flex: 1,
+    justifyContent: 'space-around',
+    marginVertical: 5,
+  },
+  label: {
+    paddingLeft: 20,
+    marginBottom: 5,
+    fontSize: 16,
+  },
+  input: {
+    fontSize: 16,
+    width: '100%',
+    backgroundColor: theme.white,
+    borderRadius: 25,
+    paddingLeft: 20,
   },
 });
 

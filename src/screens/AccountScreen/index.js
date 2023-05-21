@@ -17,6 +17,10 @@ import {
 } from '../../services/userInformation';
 import {auth} from '../../config/firebase';
 import {resetPasswordEmail} from '../../services/auth';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {TextInput} from 'react-native-gesture-handler';
+import {prettyifyDate} from '../../utils';
+import {Paragraph} from '../../components/Paragraph';
 
 const AccountSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
@@ -40,6 +44,7 @@ const AccountSchema = Yup.object().shape({
 });
 
 const AccountScreen = ({navigation}) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({
     completeName: '',
@@ -52,20 +57,34 @@ const AccountScreen = ({navigation}) => {
   async function getUserData() {
     setLoading(true);
     const userInfo = await getUserInformation();
-    setUserData(userInfo);
+    setUserData({
+      completeName: userInfo.completeName,
+      dateOfBirth: userInfo.dateOfBirth.toDate(),
+      height: userInfo.height,
+      gender: userInfo.gender,
+      email: userInfo.email,
+    });
     setLoading(false);
   }
 
   async function updateUserData(values) {
-    const result = await updateUserInformation(values);
-    if (result === 'error') {
-      Alert.alert('Erro', 'Não foi possível atualizar os dados do usuário.');
-      return;
+    if (JSON.stringify(values) !== JSON.stringify(userData)) {
+      const result = await updateUserInformation(values);
+      if (result === 'error') {
+        Alert.alert('Erro', 'Não foi possível atualizar os dados do usuário.');
+        return;
+      }
+      Alert.alert('Sucesso', 'Usuário alterado com sucesso.');
+      if (values.email !== userData.email) {
+        auth.signOut();
+        setTimeout(() => {
+          navigation.replace('Login');
+        }, 1000);
+        return;
+      }
+    } else {
+      Alert.alert('Atenção', 'Nenhuma alteração foi detectada.');
     }
-    auth.signOut();
-    setTimeout(() => {
-      navigation.replace('Login');
-    }, 1000);
   }
 
   async function sendPasswordEmail(email) {
@@ -102,6 +121,10 @@ const AccountScreen = ({navigation}) => {
     return (
       <CommonScreen navigation={navigation}>
         <Title>Altere aqui os dados da sua conta</Title>
+        <Paragraph textAlign="center">
+          Ao editar o e-mail, você será deslogado da plataforma para realizar o
+          login novamente.
+        </Paragraph>
         <Text style={styles.info}>
           É obrigatório o preenchimento de todos os campos
         </Text>
@@ -116,7 +139,6 @@ const AccountScreen = ({navigation}) => {
             }}
             validationSchema={AccountSchema}
             onSubmit={values => {
-              console.log(values);
               updateUserData(values);
             }}>
             {({
@@ -129,6 +151,31 @@ const AccountScreen = ({navigation}) => {
             }) => (
               <>
                 <View style={styles.form}>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Data de nascimento</Text>
+                    <TextInput
+                      style={[styles.input]}
+                      value={prettyifyDate(values.dateOfBirth)}
+                      onBlur={() => {
+                        handleBlur('dateOfBirth');
+                      }}
+                      onPressIn={() => setShowDatePicker(true)}
+                    />
+                    {errors.dateOfBirth && touched.dateOfBirth && (
+                      <Text style={styles.error}>{errors.dateOfBirth}</Text>
+                    )}
+                  </View>
+
+                  {showDatePicker && (
+                    <DateTimePicker
+                      value={new Date(values.dateOfBirth)}
+                      mode="date"
+                      onChange={(_, date) => {
+                        setShowDatePicker(false);
+                        handleChange('dateOfBirth')(`${date}`);
+                      }}
+                    />
+                  )}
                   {inputs.map(({label, item, options, secureTextEntry}) => {
                     return (
                       <Input
@@ -195,6 +242,23 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+  },
+  inputContainer: {
+    flex: 1,
+    justifyContent: 'space-around',
+    marginVertical: 5,
+  },
+  label: {
+    paddingLeft: 20,
+    marginBottom: 5,
+    fontSize: 16,
+  },
+  input: {
+    fontSize: 16,
+    width: '100%',
+    backgroundColor: theme.white,
+    borderRadius: 25,
+    paddingLeft: 20,
   },
 });
 
