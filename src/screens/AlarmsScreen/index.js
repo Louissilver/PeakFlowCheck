@@ -4,6 +4,7 @@ import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
 import {View, Text, StyleSheet, Switch, TouchableOpacity} from 'react-native';
 import {theme} from '../../styles/globalStyles';
+import {Icon} from 'react-native-elements';
 
 const AlarmsScreen = ({navigation}) => {
   const [alarms, setAlarms] = useState([
@@ -26,9 +27,7 @@ const AlarmsScreen = ({navigation}) => {
       <View style={styles.container}>
         {alarms.map(alarm => (
           <View style={styles.alarmContainer} key={alarm.id}>
-            <TouchableOpacity
-              style={styles.alarmItem}
-              onPress={() => toggleAlarm(alarm.id)}>
+            <View style={styles.alarmItem}>
               <Text
                 style={[
                   styles.alarmTime,
@@ -36,6 +35,14 @@ const AlarmsScreen = ({navigation}) => {
                 ]}>
                 {alarm.time}
               </Text>
+              <TouchableOpacity
+                style={[
+                  styles.alarmTime,
+                  {flexDirection: 'row', alignItems: 'center'},
+                ]}>
+                <Text style={{color: '#ff5555'}}>Remover</Text>
+                <Icon name="delete" size={35} color={'#ff5555'} />
+              </TouchableOpacity>
               <View style={styles.alarmDetails}>
                 <Switch
                   value={alarm.isActive}
@@ -45,7 +52,7 @@ const AlarmsScreen = ({navigation}) => {
                   style={{transform: [{scaleX: 2}, {scaleY: 2}]}}
                 />
               </View>
-            </TouchableOpacity>
+            </View>
             <Text
               style={[
                 styles.alarmLabel,

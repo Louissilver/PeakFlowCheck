@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import NewAlarmImage from '../../assets/undraw_time_management_re_tk5w.svg';
@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import {Input} from '../../components/Input';
 import {inputs} from './inputs';
 import {theme} from '../../styles/globalStyles';
+import PushNotification from 'react-native-push-notification';
 
 const LoginSchema = Yup.object().shape({
   hour: Yup.string().required('Campo obrigatório'),
@@ -16,7 +17,55 @@ const LoginSchema = Yup.object().shape({
   recurrence: Yup.string().required('Campo obrigatório'),
 });
 
+PushNotification.configure({
+  requestPermissions: Platform.OS === 'ios',
+  onNotification: function (notification) {
+    console.log('LOCAL NOTIFICATION ==>', notification);
+  },
+  onAction: function (notification) {
+    if (notification.action === 'Accept') {
+      console.log('Alarm Snoozed');
+    } else if (notification.action === 'Reject') {
+      console.log('Alarm Stoped');
+      //PushNotification.cancelAllLocalNotifications();
+    } else {
+      console.log('Notification opened');
+    }
+  },
+  actions: ['Accept', 'Reject'],
+});
+
 const NewAlarmScreen = ({navigation}) => {
+  useEffect(() => {
+    createChannels();
+  }, []);
+
+  const createChannels = () => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'Test Channel',
+      channelDescription: 'A channel to categorise your notifications',
+    });
+  };
+
+  const handleNotification = () => {
+    PushNotification.cancelAllLocalNotifications();
+    console.log(new Date(Date.now() + 5 * 1000));
+
+    PushNotification.localNotificationSchedule({
+      channelId: 'test-channel',
+      title: 'Alarm Ringing',
+
+      message: 'Message Here',
+      actions: ['Accept', 'Reject'],
+      date: new Date(Date.now() + 100),
+      allowWhileIdle: true,
+      invokeApp: false,
+
+      //repeatTime: 2,
+    });
+  };
+
   return (
     <CommonScreen navigation={navigation}>
       <Title>Novo alarme</Title>
@@ -32,7 +81,12 @@ const NewAlarmScreen = ({navigation}) => {
             recurrence: '',
           }}
           validationSchema={LoginSchema}
-          onSubmit={values => console.log(values)}>
+          onSubmit={values =>
+            handleScheduleNotification(
+              'Tesde de PFE',
+              new Date(Date.now() + 5 * 1000),
+            )
+          }>
           {({
             handleChange,
             handleBlur,
@@ -78,7 +132,7 @@ const NewAlarmScreen = ({navigation}) => {
                 />
               </View>
 
-              <Button onPress={() => handleSubmit()}>Salvar</Button>
+              <Button onPress={() => handleNotification()}>Salvar</Button>
               <Button
                 secondary
                 onPress={() => navigation.navigate('Meus alarmes')}>

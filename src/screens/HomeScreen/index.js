@@ -41,7 +41,6 @@ const HomeScreen = ({navigation}) => {
 
       // Juntar a data e o horário
       const formattedDateTime = `${datePart} ${timePart}`;
-      console.log(formattedDateTime);
       return formattedDateTime;
     });
     setChartPercentData(resultPercentArray);
