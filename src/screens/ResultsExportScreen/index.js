@@ -2,7 +2,7 @@ import React from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Share, View} from 'react-native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {Input} from '../../components/Input';
@@ -14,6 +14,26 @@ const LoginSchema = Yup.object().shape({
 });
 
 const ResultsExportScreen = ({navigation}) => {
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <CommonScreen navigation={navigation}>
       <Title>Seleciona o formato do arquivo de exportação</Title>
@@ -46,7 +66,7 @@ const ResultsExportScreen = ({navigation}) => {
                 />
               </View>
 
-              <Button onPress={() => handleSubmit()}>Exportar</Button>
+              <Button onPress={onShare}>Exportar</Button>
               <Button
                 secondary
                 onPress={() => navigation.navigate('Lista de resultados')}>

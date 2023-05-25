@@ -4,40 +4,59 @@ import {Button} from '../../components/Button';
 import {ListResult, ListHeader} from '../../components/ListResult';
 import ResultsEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import CommonScreen from '../../components/CommonScreen';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Share, Alert, ScrollView} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import {Paragraph} from '../../components/Paragraph';
 import {
   getTestResults,
   getTestResultsInRealTime,
 } from '../../services/testResults';
-import {ScrollView} from 'react-native-gesture-handler';
+import {generateTable} from '../../utils';
 
 const ResultsScreen = ({navigation}) => {
   const [limit, setLimit] = useState(9);
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  async function loadResultData() {
+  async function loadResultData(dataLimit) {
     setRefreshing(true);
-    const resultsFirestore = await getTestResults(limit);
+    const resultsFirestore = await getTestResults(dataLimit);
     setData(resultsFirestore);
     setRefreshing(false);
   }
 
   useEffect(() => {
-    loadResultData();
+    loadResultData(limit);
     getTestResultsInRealTime(setData);
   }, []);
 
   useEffect(() => {
     const resetResult = navigation.addListener('focus', () => {
-      loadResultData();
+      loadResultData(limit);
       getTestResultsInRealTime(setData);
       setData(9);
     });
     return resetResult;
   }, [navigation]);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: generateTable(data),
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
 
   return (
     <CommonScreen navigation={navigation}>
@@ -61,11 +80,9 @@ const ResultsScreen = ({navigation}) => {
       <Button onPress={() => loadResultData(setLimit(limit + 9))}>
         Ver mais
       </Button>
-      {/* <Button
-        secondary
-        onPress={() => navigation.navigate('Exportar resultados')}>
-        Exportar lista
-      </Button> */}
+      <Button secondary onPress={onShare}>
+        Compartilhar lista
+      </Button>
     </CommonScreen>
   );
 };

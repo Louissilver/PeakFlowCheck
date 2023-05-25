@@ -29,16 +29,25 @@ export async function saveTestResult(data) {
   }
 }
 
-export async function getTestResults(docLimit = 20) {
+export async function getTestResults(docLimit) {
   try {
     let results = [];
 
-    const q = query(
-      collection(db, 'testResults'),
-      where('userId', '==', auth.currentUser.uid),
-      orderBy('resultDateTime', 'desc'),
-      limit(docLimit),
-    );
+    let q;
+    if (docLimit) {
+      q = query(
+        collection(db, 'testResults'),
+        where('userId', '==', auth.currentUser.uid),
+        orderBy('resultDateTime', 'desc'),
+        limit(docLimit),
+      );
+    } else {
+      q = query(
+        collection(db, 'testResults'),
+        where('userId', '==', auth.currentUser.uid),
+        orderBy('resultDateTime', 'desc'),
+      );
+    }
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {

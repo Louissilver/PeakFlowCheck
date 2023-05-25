@@ -63,3 +63,50 @@ export const prettyifyDate = date => {
   }
   return '';
 };
+
+// Função para formatar uma célula na tabela
+function formatCell(value, width) {
+  const formattedValue = value.toString().padEnd(width, ' ');
+  return `| ${formattedValue} `;
+}
+
+// Função para criar uma linha de separação
+function createSeparator(widths) {
+  let separator = '+';
+  widths.forEach(width => {
+    separator += '-'.repeat(width + 2) + '+';
+  });
+  return separator;
+}
+
+export function generateTable(data) {
+  // Obtendo as chaves do objeto para determinar as colunas
+  const keys = Object.keys(data[0]);
+
+  // Calculando as larguras das colunas
+  const columnWidths = keys.map(key => key.length);
+  data.forEach(item => {
+    keys.forEach((key, index) => {
+      const valueLength = item[key].toString().length;
+      if (valueLength > columnWidths[index]) {
+        columnWidths[index] = valueLength;
+      }
+    });
+  });
+
+  // Construindo a tabela formatada
+  let table = '';
+  table += createSeparator(columnWidths) + '\n';
+  table +=
+    keys.map((key, index) => formatCell(key, columnWidths[index])).join('') +
+    '|\n';
+  table += createSeparator(columnWidths) + '\n';
+  data.forEach(item => {
+    keys.forEach((key, index) => {
+      table += formatCell(item[key], columnWidths[index]);
+    });
+    table += '|\n';
+  });
+  table += createSeparator(columnWidths);
+  return table;
+}
