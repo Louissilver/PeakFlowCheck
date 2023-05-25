@@ -51,7 +51,13 @@ export async function getTestResults(docLimit) {
 
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach(doc => {
-      let result = {id: doc.id, ...doc.data()};
+      let result = {
+        resultPercent: doc.data().resultPercent,
+        expectedPeakflow: doc.data().expectedPeakflow,
+        measuredPeakflow: doc.data().measuredPeakflow,
+        resultClass: doc.data().resultClass,
+        resultDateTime: doc.data().resultDateTime,
+      };
       results.push(result);
     });
 
@@ -68,7 +74,13 @@ export async function getTestResultsInRealTime(setResults) {
 
   onSnapshot(collection(db, 'testResults'), querySnapshot => {
     querySnapshot.forEach(doc => {
-      let result = {id: doc.id, ...doc.data()};
+      let result = {
+        resultPercent: doc.data().resultPercent,
+        expectedPeakflow: doc.data().expectedPeakflow,
+        measuredPeakflow: doc.data().measuredPeakflow,
+        resultClass: doc.data().resultClass,
+        resultDateTime: doc.data().resultDateTime,
+      };
       testResults.push(result);
     });
     setResults(testResults);
