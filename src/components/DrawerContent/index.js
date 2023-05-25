@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import MenuItem from '../MenuItem';
 import styles from './styles';
 import Logo from '../../assets/logo.svg';
+import {auth} from '../../config/firebase';
 
 const DrawerContent = props => {
   const menuItems = [
@@ -44,10 +45,10 @@ const DrawerContent = props => {
   ];
 
   const handleLogout = () => {
-    props.navigation.reset({
-      index: 0,
-      routes: [{name: 'Login'}],
-    });
+    auth.signOut();
+    setTimeout(() => {
+      props.navigation.replace('Login');
+    }, 1000);
   };
 
   return (

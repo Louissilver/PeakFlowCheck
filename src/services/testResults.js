@@ -29,7 +29,7 @@ export async function saveTestResult(data) {
   }
 }
 
-export async function getTestResults() {
+export async function getTestResults(docLimit = 20) {
   try {
     let results = [];
 
@@ -37,7 +37,7 @@ export async function getTestResults() {
       collection(db, 'testResults'),
       where('userId', '==', auth.currentUser.uid),
       orderBy('resultDateTime', 'desc'),
-      limit(20),
+      limit(docLimit),
     );
 
     const querySnapshot = await getDocs(q);

@@ -14,12 +14,13 @@ import {
 import {ScrollView} from 'react-native-gesture-handler';
 
 const ResultsScreen = ({navigation}) => {
+  const [limit, setLimit] = useState(9);
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   async function loadResultData() {
     setRefreshing(true);
-    const resultsFirestore = await getTestResults();
+    const resultsFirestore = await getTestResults(limit);
     setData(resultsFirestore);
     setRefreshing(false);
   }
@@ -33,6 +34,7 @@ const ResultsScreen = ({navigation}) => {
     const resetResult = navigation.addListener('focus', () => {
       loadResultData();
       getTestResultsInRealTime(setData);
+      setData(9);
     });
     return resetResult;
   }, [navigation]);
@@ -56,7 +58,9 @@ const ResultsScreen = ({navigation}) => {
       ) : (
         <Paragraph>Carregando lista de resultados...</Paragraph>
       )}
-      <Button onPress={loadResultData}>Atualizar</Button>
+      <Button onPress={() => loadResultData(setLimit(limit + 9))}>
+        Ver mais
+      </Button>
       {/* <Button
         secondary
         onPress={() => navigation.navigate('Exportar resultados')}>

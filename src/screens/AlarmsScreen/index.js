@@ -1,24 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
 import {View, Text, StyleSheet, Switch, TouchableOpacity} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import {Icon} from 'react-native-elements';
+import PushNotification from 'react-native-push-notification';
 
 const AlarmsScreen = ({navigation}) => {
-  const [alarms, setAlarms] = useState([
-    {id: 1, time: '07:30', label: 'Diário', isActive: true},
-    {id: 2, time: '12:00', label: 'Uma vez', isActive: false},
-    {id: 3, time: '16:30', label: 'Diário', isActive: true},
-    {id: 4, time: '21:00', label: 'Diário', isActive: true},
-  ]);
-  const toggleAlarm = id => {
-    setAlarms(
-      alarms.map(alarm =>
-        alarm.id === id ? {...alarm, isActive: !alarm.isActive} : alarm,
-      ),
-    );
+  const [alarms, setAlarms] = useState([]);
+
+  useEffect(() => {
+    loadAlarms();
+  }, []);
+
+  useEffect(() => {
+    const resetResult = navigation.addListener('focus', () => {
+      loadAlarms();
+    });
+    return resetResult;
+  }, [navigation]);
+
+  const loadAlarms = () => {
+    PushNotification.getScheduledLocalNotifications(notifications => {
+      setAlarms(notifications);
+    });
   };
 
   return (
@@ -28,14 +34,14 @@ const AlarmsScreen = ({navigation}) => {
         {alarms.map(alarm => (
           <View style={styles.alarmContainer} key={alarm.id}>
             <View style={styles.alarmItem}>
-              <Text
-                style={[
-                  styles.alarmTime,
-                  {color: alarm.isActive ? theme.black : theme.grey},
-                ]}>
-                {alarm.time}
+              <Text style={styles.alarmTime}>
+                {new Date(alarm.date).toLocaleTimeString()}
               </Text>
               <TouchableOpacity
+                onPress={() => {
+                  PushNotification.cancelLocalNotification(alarm.id);
+                  loadAlarms();
+                }}
                 style={[
                   styles.alarmTime,
                   {flexDirection: 'row', alignItems: 'center'},
@@ -43,22 +49,13 @@ const AlarmsScreen = ({navigation}) => {
                 <Text style={{color: '#ff5555'}}>Remover</Text>
                 <Icon name="delete" size={35} color={'#ff5555'} />
               </TouchableOpacity>
-              <View style={styles.alarmDetails}>
-                <Switch
-                  value={alarm.isActive}
-                  onValueChange={() => toggleAlarm(alarm.id)}
-                  thumbColor={theme.white}
-                  trackColor={theme.main}
-                  style={{transform: [{scaleX: 2}, {scaleY: 2}]}}
-                />
-              </View>
             </View>
             <Text
               style={[
                 styles.alarmLabel,
                 {color: alarm.isActive ? theme.black : theme.grey},
               ]}>
-              {alarm.label}
+              {alarm.repeatInterval ? 'Diário' : 'Uma vez'}
             </Text>
           </View>
         ))}
