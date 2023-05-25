@@ -4,7 +4,7 @@ import {Button} from '../../components/Button';
 import {ListResult, ListHeader} from '../../components/ListResult';
 import ResultsEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import CommonScreen from '../../components/CommonScreen';
-import {View, StyleSheet, Share, Alert, ScrollView} from 'react-native';
+import {View, StyleSheet, Share, Alert} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import {Paragraph} from '../../components/Paragraph';
 import {
@@ -12,6 +12,7 @@ import {
   getTestResultsInRealTime,
 } from '../../services/testResults';
 import {generateTable} from '../../utils';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ResultsScreen = ({navigation}) => {
   const [limit, setLimit] = useState(9);
