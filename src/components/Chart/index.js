@@ -18,6 +18,11 @@ const ResultsChart = ({line}) => {
         propsForLabels: {
           fontSize: 15,
         },
+        propsForDots: {
+          r: '7',
+          strokeWidth: '2',
+          stroke: '#fff',
+        },
         backgroundGradientFrom: theme.secondary,
         backgroundGradientTo: theme.secondary,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
