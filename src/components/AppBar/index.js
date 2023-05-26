@@ -22,9 +22,9 @@ const AppBar = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Dados da conta')}
+        onPress={() => navigation.navigate('Início')}
         style={styles.button}>
-        <Icon name="account" size={40} color={theme.textContrastMain} />
+        <Icon name="home" size={40} color={theme.textContrastMain} />
       </TouchableOpacity>
     </View>
   );

@@ -59,10 +59,10 @@ const TermsOfUseScreen = ({navigation}) => {
         acesso às funcionalidades essenciais.
       </Paragraph>
       <Paragraph textAlign="justify">
-        Sistema de Alarme 6.1. O Aplicativo permite que você configure alarmes
-        recorrentes, que serão disparados de acordo com a configuração
+        Sistema de Lembrete 6.1. O Aplicativo permite que você configure
+        lembretes recorrentes, que serão disparados de acordo com a configuração
         escolhida. 6.2. Você poderá selecionar apenas um tipo de recorrência:
-        "Diário" ou "Uma vez". 6.3. É possível cadastrar mais de um alarme.
+        "Diário" ou "Uma vez". 6.3. É possível cadastrar mais de um lembrete.
       </Paragraph>
       <Paragraph textAlign="justify">
         Sistema de Localização 7.1. O Aplicativo permite que você visualize um

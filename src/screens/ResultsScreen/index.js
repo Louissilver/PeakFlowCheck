@@ -28,7 +28,6 @@ const ResultsScreen = ({navigation}) => {
 
   useEffect(() => {
     loadResultData(limit);
-    getTestResultsInRealTime(setData);
   }, []);
 
   useEffect(() => {

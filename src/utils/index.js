@@ -59,7 +59,10 @@ export const calculateAge = dateString => {
 
 export const prettyifyDate = date => {
   if (date) {
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    const newDate = new Date(date);
+    return `${newDate.getDate()}/${
+      newDate.getMonth() + 1
+    }/${newDate.getFullYear()}`;
   }
   return '';
 };

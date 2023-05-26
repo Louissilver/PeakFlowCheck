@@ -4,10 +4,7 @@ import HomeEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import CommonScreen from '../../components/CommonScreen';
 import {Paragraph} from '../../components/Paragraph';
 import ResultsChart from '../../components/Chart';
-import {
-  getTestResults,
-  getTestResultsInRealTime,
-} from '../../services/testResults';
+import {getTestResults} from '../../services/testResults';
 
 const HomeScreen = ({navigation}) => {
   const [chartPercentData, setChartPercentData] = useState([]);
@@ -32,17 +29,16 @@ const HomeScreen = ({navigation}) => {
         0,
         resultDateTime.lastIndexOf('/'),
       );
-
-      // Obter a parte do horário (hh:mm)
       const timePart = resultDateTime.substring(
         resultDateTime.indexOf(',') + 2,
         resultDateTime.lastIndexOf(':'),
       );
-
-      // Juntar a data e o horário
       const formattedDateTime = `${datePart} ${timePart}`;
       return formattedDateTime;
     });
+
+    resultPercentArray.reverse();
+    resultDateArray.reverse();
     setChartPercentData(resultPercentArray);
     setChartDateData(resultDateArray);
   }

@@ -18,13 +18,13 @@ const DrawerContent = props => {
       icon: 'account-circle',
     },
     {
-      label: 'Alarmes',
-      route: 'Alarmes',
+      label: 'Lembretes',
+      route: 'Lembretes',
       icon: 'alarm',
     },
     {
-      label: 'Mapa da saúde',
-      route: 'Mapa da saúde',
+      label: 'Instituições de saúde',
+      route: 'Instituições de saúde',
       icon: 'map-marker',
     },
     {

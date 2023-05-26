@@ -105,6 +105,7 @@ const SignUpScreen = ({navigation}) => {
                     onBlur={() => {
                       handleBlur('dateOfBirth');
                     }}
+                    enabled={false}
                     onPressIn={() => setShowDatePicker(true)}
                   />
                   {errors.dateOfBirth && touched.dateOfBirth && (
@@ -118,7 +119,9 @@ const SignUpScreen = ({navigation}) => {
                     mode="date"
                     onChange={(_, date) => {
                       setShowDatePicker(false);
-                      handleChange('dateOfBirth')(`${date}`);
+                      if (date) {
+                        handleChange('dateOfBirth')(`${date}`);
+                      }
                     }}
                   />
                 )}

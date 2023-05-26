@@ -54,15 +54,15 @@ const AboutScreen = ({navigation}) => {
         será possível visualizar se de um teste para outro houve melhora ou
         piora do quadro do usuário.
       </Text>
-      <Paragraph textAlign={'justify'}>Alarmes</Paragraph>
+      <Paragraph textAlign={'justify'}>Lembretes</Paragraph>
       <Text style={styles.list}>
         É uma funcionalidade utilizada para auxiliar o usuário a manter a
         regularidade na realização do exame. O usuário conseguirá cadastrar seus
-        alarmes com dois tipos de recorrência. A primeira é do tipo diária, ou
-        seja, será definido um horário e esse alarme será disparado diariamente
-        no mesmo horário. O segundo formato permite ao usuário cadastrar um
-        alarme para ser executado uma única vez, e após executado esse alarme
-        será desabilitado.
+        lembretes com dois tipos de recorrência. A primeira é do tipo diária, ou
+        seja, será definido um horário e esse lembrete será disparado
+        diariamente no mesmo horário. O segundo formato permite ao usuário
+        cadastrar um lembrete para ser executado uma única vez, e após executado
+        esse lembrete será desabilitado.
       </Text>
       <Paragraph textAlign={'justify'}>Teste de PFE</Paragraph>
       <Text style={styles.list}>

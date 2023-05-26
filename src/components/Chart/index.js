@@ -13,13 +13,13 @@ const ResultsChart = ({line}) => {
       yAxisLabel={'%'}
       chartConfig={{
         propsForBackgroundLines: {
-          stroke: '#f2f2f2',
+          stroke: theme.main,
         },
         propsForLabels: {
           fontSize: 15,
         },
-        backgroundGradientFrom: theme.main,
-        backgroundGradientTo: theme.main,
+        backgroundGradientFrom: theme.secondary,
+        backgroundGradientTo: theme.secondary,
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       }}
       style={{

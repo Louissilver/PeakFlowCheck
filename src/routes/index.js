@@ -78,12 +78,12 @@ const AlarmStackNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Meus alarmes"
+        name="Meus lembretes"
         component={AlarmsScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="Novo alarme"
+        name="Novo lembrete"
         component={NewAlarmScreen}
         options={{headerShown: false}}
       />
@@ -125,12 +125,12 @@ const DrawerNavigation = () => {
         options={{headerShown: false}}
       />
       <Drawer.Screen
-        name="Alarmes"
+        name="Lembretes"
         component={AlarmStackNavigation}
         options={{headerShown: false}}
       />
       <Drawer.Screen
-        name="Mapa da saúde"
+        name="Instituições de saúde"
         component={HealthMapScreen}
         options={{headerShown: false}}
       />

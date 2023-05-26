@@ -65,7 +65,7 @@ const NewAlarmScreen = ({navigation}) => {
         });
         Alert.alert(
           'Sucesso!',
-          `Seu alarme foi definido para ${date.toLocaleString()}.`,
+          `Seu lembrete foi definido para ${date.toLocaleString()}.`,
         );
       } else if (alarm.recurrence === 'daily') {
         PushNotification.localNotificationSchedule({
@@ -85,18 +85,18 @@ const NewAlarmScreen = ({navigation}) => {
         });
         Alert.alert(
           'Sucesso!',
-          `Seu alarme foi definido para ${date.toLocaleTimeString()} diariamente.`,
+          `Seu lembrete foi definido para ${date.toLocaleTimeString()} diariamente.`,
         );
       }
     } catch (e) {
-      Alert.alert('Erro', 'Não foi possível definir seu alarme.');
+      Alert.alert('Erro', 'Não foi possível definir seu lembrete.');
       console.log(e);
     }
   }
 
   return (
     <CommonScreen navigation={navigation}>
-      <Title>Novo alarme</Title>
+      <Title>Novo lembrete</Title>
       <NewAlarmImage width={352} height={250} />
       <Text style={styles.info}>
         É obrigatório o preenchimento de todos os campos

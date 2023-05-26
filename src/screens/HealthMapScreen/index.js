@@ -1,42 +1,37 @@
 import React from 'react';
 import {Title} from '../../components/Title';
 import CommonScreen from '../../components/CommonScreen';
-import {Image, StyleSheet, View} from 'react-native';
-import mapa from '../../assets/mapa.png';
+import {StyleSheet, View, Linking} from 'react-native';
 import {theme} from '../../styles/globalStyles';
-import {InstitutionsList} from '../../components/InstitutionsList';
+import {Button} from '../../components/Button';
 
 const HealthMapScreen = ({navigation}) => {
-  const data = [
-    {
-      nome: 'Hospital Getúlio Vargas',
-      telefone: '05134518200',
-      endereco:
-        'R. Pinheiro Machado, 331 - Dihel, Sapucaia do Sul - RS, 93210-180',
-      horario: '08:30 às 18:00',
-    },
-    {
-      nome: 'Clínica Barão de Cotegipe',
-      telefone: '05134519866',
-      endereco: 'R. Andorinhas, 551 - Silva, Sapucaia do Sul - RS, 93214-300',
-      horario: '08:30 às 18:00',
-    },
-    {
-      nome: 'Unidade de Pronto Atendimento',
-      telefone: '05134513255',
-      endereco:
-        'R. Carvalho Facão, 222 - Centro, Sapucaia do Sul - RS, 93310-200',
-      horario: '08:30 às 18:00',
-    },
-  ];
+  const handleOpenGoogleMaps = place => {
+    const url = `https://www.google.com.br/maps/search/${place}`;
+
+    Linking.openURL(url).catch(error =>
+      console.log('Erro ao abrir o Google Maps:', error),
+    );
+  };
 
   return (
     <CommonScreen navigation={navigation}>
-      <Title>Aqui estão instituições de saúde abertas agora</Title>
+      <Title>Encontre instituições de saúde próximas e abertas agora</Title>
       <View style={styles.container}>
-        <Image source={mapa} style={styles.mapa} />
-        <Title>Mais informações</Title>
-        <InstitutionsList data={data} />
+        <Button onPress={() => handleOpenGoogleMaps('hospital+aberto+agora')}>
+          Hospitais
+        </Button>
+
+        <Button
+          onPress={() =>
+            handleOpenGoogleMaps('consultório+médico+aberto+agora')
+          }>
+          Consultório médico
+        </Button>
+
+        <Button onPress={() => handleOpenGoogleMaps('UPA+aberto+agora')}>
+          UPAs
+        </Button>
       </View>
     </CommonScreen>
   );

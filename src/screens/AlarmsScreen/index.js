@@ -29,7 +29,9 @@ const AlarmsScreen = ({navigation}) => {
 
   return (
     <CommonScreen navigation={navigation}>
-      <Title>Gerencia aqui seus alarmes para realização do teste de PFE</Title>
+      <Title>
+        Gerencia aqui seus lembretes para realização do teste de PFE
+      </Title>
       <View style={styles.container}>
         {alarms.map(alarm => (
           <View style={styles.alarmContainer} key={alarm.id}>
@@ -60,8 +62,8 @@ const AlarmsScreen = ({navigation}) => {
           </View>
         ))}
       </View>
-      <Button onPress={() => navigation.navigate('Novo alarme')}>
-        Novo alarme
+      <Button onPress={() => navigation.navigate('Novo lembrete')}>
+        Novo lembrete
       </Button>
     </CommonScreen>
   );

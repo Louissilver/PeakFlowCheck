@@ -172,7 +172,9 @@ const AccountScreen = ({navigation}) => {
                       mode="date"
                       onChange={(_, date) => {
                         setShowDatePicker(false);
-                        handleChange('dateOfBirth')(`${date}`);
+                        if (date) {
+                          handleChange('dateOfBirth')(`${date}`);
+                        }
                       }}
                     />
                   )}
