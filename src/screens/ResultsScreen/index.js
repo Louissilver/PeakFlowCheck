@@ -13,6 +13,7 @@ import {
 } from '../../services/testResults';
 import {generateTable} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ResultsScreen = ({navigation}) => {
   const [limit, setLimit] = useState(9);
@@ -26,18 +27,11 @@ const ResultsScreen = ({navigation}) => {
     setRefreshing(false);
   }
 
-  useEffect(() => {
-    loadResultData(limit);
-  }, []);
-
-  useEffect(() => {
-    const resetResult = navigation.addListener('focus', () => {
+  useFocusEffect(
+    React.useCallback(() => {
       loadResultData(limit);
-      getTestResultsInRealTime(setData);
-      setData(9);
-    });
-    return resetResult;
-  }, [navigation]);
+    }, []),
+  );
 
   const onShare = async () => {
     try {

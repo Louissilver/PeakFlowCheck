@@ -105,7 +105,6 @@ const TermsOfUseScreen = ({navigation}) => {
         informações sobre o objetivo, forma de uso, funcionalidades, permissões
         e quando procurar um especialista.
       </Paragraph>
-      <Button>Iniciar</Button>
     </CommonScreen>
   );
 };

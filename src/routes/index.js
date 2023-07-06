@@ -7,7 +7,6 @@ import TermsOfUseScreen from '../screens/TermsOfUseScreen';
 import ResultExportScreen from '../screens/ResultsExportScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import PeakFlowScreen from '../screens/PeakFlowScreen';
-import PasswordResetScreen from '../screens/PasswordResetScreen';
 import NewAlarmScreen from '../screens/NewAlarmScreen';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -36,11 +35,6 @@ const StackNavigation = () => {
       <Stack.Screen
         name="Nova senha"
         component={ForgotPasswordScreen}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Redefinição de senha"
-        component={PasswordResetScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen

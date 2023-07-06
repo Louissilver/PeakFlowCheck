@@ -25,17 +25,17 @@ import {Paragraph} from '../../components/Paragraph';
 const AccountSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
   dateOfBirth: Yup.date()
-    .required('A data de nascimento é obrigatória')
+    .required('Campo obrigatório')
     .transform(function (value, originalValue, context) {
       if (context.isType(value)) return value;
       return parse(originalValue, 'dd/MM/yyyy', new Date());
     }),
   height: Yup.number()
-    .required('A altura é obrigatória')
+    .required('Campo obrigatório')
     .typeError('A altura deve ser um número')
     .min(0.5, 'A altura mínima é de 50 cm'),
   gender: Yup.string()
-    .required('O sexo é obrigatório')
+    .required('Campo obrigatório')
     .oneOf(
       ['masculino', 'feminino'],
       'O sexo deve ser "masculino" ou "feminino"',

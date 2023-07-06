@@ -20,7 +20,7 @@ import {prettyifyDate} from '../../utils';
 const LoginSchema = Yup.object().shape({
   completeName: Yup.string().required('Campo obrigatório'),
   dateOfBirth: Yup.date()
-    .required('A data de nascimento é obrigatória')
+    .required('Campo obrigatório')
     .transform(function (value, originalValue, context) {
       if (context.isType(value)) {
         return value;
@@ -28,11 +28,11 @@ const LoginSchema = Yup.object().shape({
       return parse(originalValue, 'dd/MM/yyyy', new Date());
     }),
   height: Yup.number()
-    .required('A altura é obrigatória')
+    .required('Campo obrigatório')
     .typeError('A altura deve ser um número')
     .min(0.5, 'A altura mínima é de 50 cm'),
   gender: Yup.string()
-    .required('O sexo é obrigatório')
+    .required('Campo obrigatório')
     .oneOf(
       ['masculino', 'feminino'],
       'O sexo deve ser "masculino" ou "feminino"',
@@ -41,7 +41,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Campo obrigatório'),
   passConfirm: Yup.string()
     .oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais')
-    .required('A confirmação de senha é obrigatória'),
+    .required('Campo obrigatório'),
   termsOfUse: Yup.boolean()
     .oneOf([true], 'Você precisa aceitar os termos')
     .required('Você precisa aceitar os termos'),

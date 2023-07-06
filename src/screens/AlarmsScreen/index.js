@@ -1,25 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
-import {View, Text, StyleSheet, Switch, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import {Icon} from 'react-native-elements';
 import PushNotification from 'react-native-push-notification';
+import {useFocusEffect} from '@react-navigation/native';
 
 const AlarmsScreen = ({navigation}) => {
   const [alarms, setAlarms] = useState([]);
 
-  useEffect(() => {
-    loadAlarms();
-  }, []);
-
-  useEffect(() => {
-    const resetResult = navigation.addListener('focus', () => {
+  useFocusEffect(
+    React.useCallback(() => {
       loadAlarms();
-    });
-    return resetResult;
-  }, [navigation]);
+    }, []),
+  );
 
   const loadAlarms = () => {
     PushNotification.getScheduledLocalNotifications(notifications => {

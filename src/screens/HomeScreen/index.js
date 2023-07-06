@@ -5,6 +5,7 @@ import CommonScreen from '../../components/CommonScreen';
 import {Paragraph} from '../../components/Paragraph';
 import ResultsChart from '../../components/Chart';
 import {getTestResults} from '../../services/testResults';
+import {useFocusEffect} from '@react-navigation/native';
 
 const HomeScreen = ({navigation}) => {
   const [chartPercentData, setChartPercentData] = useState([]);
@@ -43,16 +44,11 @@ const HomeScreen = ({navigation}) => {
     setChartDateData(resultDateArray);
   }
 
-  useEffect(() => {
-    loadResultData();
-  }, []);
-
-  useEffect(() => {
-    const resetResult = navigation.addListener('focus', () => {
+  useFocusEffect(
+    React.useCallback(() => {
       loadResultData();
-    });
-    return resetResult;
-  }, [navigation]);
+    }, []),
+  );
 
   return (
     <CommonScreen navigation={navigation} isHome={true}>

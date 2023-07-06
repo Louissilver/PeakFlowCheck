@@ -44,16 +44,21 @@ const NewAlarmScreen = ({navigation}) => {
 
   function setRepeatingNotification(alarm) {
     try {
-      const date = new Date();
-      date.setHours(parseInt(alarm.hour));
-      date.setMinutes(parseInt(alarm.minute));
-      date.setSeconds(0);
-      date.setMilliseconds(0);
+      const currentDate = new Date();
+      const alarmDate = new Date();
+      alarmDate.setHours(parseInt(alarm.hour));
+      alarmDate.setMinutes(parseInt(alarm.minute));
+      alarmDate.setSeconds(0);
+      alarmDate.setMilliseconds(0);
+
+      if (currentDate > alarmDate) {
+        alarmDate.setDate(alarmDate.getDate() + 1); // Configura para amanhã
+      }
       if (alarm.recurrence === 'once') {
         PushNotification.localNotificationSchedule({
           title: 'Peak Flow Assist',
           message: 'Está na hora de realizar seu teste de PFE!',
-          date: date,
+          date: alarmDate,
           channelId: 'PeakFlowChannelId',
           playSound: true,
           vibrate: true,
@@ -65,13 +70,13 @@ const NewAlarmScreen = ({navigation}) => {
         });
         Alert.alert(
           'Sucesso!',
-          `Seu lembrete foi definido para ${date.toLocaleString()}.`,
+          `Seu lembrete foi definido para ${alarmDate.toLocaleString()}.`,
         );
       } else if (alarm.recurrence === 'daily') {
         PushNotification.localNotificationSchedule({
           title: 'Peak Flow Assist',
           message: 'Está na hora de realizar seu teste de PFE!',
-          date: date,
+          date: alarmDate,
           channelId: 'PeakFlowChannelId',
           repeatType: 'day',
           repeatTime: 1,
@@ -85,7 +90,7 @@ const NewAlarmScreen = ({navigation}) => {
         });
         Alert.alert(
           'Sucesso!',
-          `Seu lembrete foi definido para ${date.toLocaleTimeString()} diariamente.`,
+          `Seu lembrete foi definido para ${alarmDate.toLocaleTimeString()} diariamente.`,
         );
       }
     } catch (e) {
