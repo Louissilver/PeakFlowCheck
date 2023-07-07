@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Title} from '../../components/Title';
 import HomeEmptyChartImage from '../../assets/undraw_empty_re_opql.svg';
 import CommonScreen from '../../components/CommonScreen';
@@ -21,7 +21,7 @@ const HomeScreen = ({navigation}) => {
   };
 
   async function loadResultData() {
-    const resultsFirestore = await getTestResults();
+    const resultsFirestore = await getTestResults(7);
     const resultPercentArray = [...resultsFirestore].map(({resultPercent}) =>
       parseFloat(resultPercent),
     );

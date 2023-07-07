@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import {ListResult, ListHeader} from '../../components/ListResult';
@@ -7,11 +7,8 @@ import CommonScreen from '../../components/CommonScreen';
 import {View, StyleSheet, Share, Alert} from 'react-native';
 import {theme} from '../../styles/globalStyles';
 import {Paragraph} from '../../components/Paragraph';
-import {
-  getTestResults,
-  getTestResultsInRealTime,
-} from '../../services/testResults';
-import {generateTable} from '../../utils';
+import {getTestResults} from '../../services/testResults';
+import {generateCSV} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -36,7 +33,7 @@ const ResultsScreen = ({navigation}) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: generateTable(data),
+        message: generateCSV(data),
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
