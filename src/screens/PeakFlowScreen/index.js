@@ -3,7 +3,7 @@ import {Title} from '../../components/Title';
 import {Button} from '../../components/Button';
 import CommonScreen from '../../components/CommonScreen';
 import AudioRecord from 'react-native-audio-record';
-import {PermissionsAndroid} from 'react-native';
+import {PermissionsAndroid, Alert} from 'react-native';
 import {Buffer} from 'buffer';
 import {FFT} from 'dsp.js';
 import RNFS from 'react-native-fs';
@@ -181,12 +181,21 @@ const PeakFlowScreen = ({navigation}) => {
 
     // Calcula o resultado do PFE obtido X PFE esperado
     const calculatedResult = calculatePEF(userData, peakFlow);
-    setResult(calculatedResult);
-    await execSaveTestResult(calculatedResult);
-
-    // Descarta o áudio gravado
-    await discard();
-    setGenerating(false);
+    if (calculatedResult.resultPercent > 100) {
+      Alert.alert(
+        'Erro',
+        'Ocorreu um erro ao processar o resultado. Por favor, tente novamente e certifique-se de estar em um ambiente silencioso e estar próximo do microfone.',
+      );
+      // Descarta o áudio gravado
+      await discard();
+      setGenerating(false);
+    } else {
+      setResult(calculatedResult);
+      await execSaveTestResult(calculatedResult);
+      // Descarta o áudio gravado
+      await discard();
+      setGenerating(false);
+    }
   };
 
   const discard = async () => {
