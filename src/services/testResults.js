@@ -16,10 +16,11 @@ export async function saveTestResult(data) {
   try {
     await addDoc(collection(db, 'testResults'), {
       userId: auth.currentUser.uid,
-      resultPercent: data.resultPercent,
-      resultClass: data.resultClass,
-      expectedPeakflow: data.expectedPeakflow,
-      measuredPeakflow: data.measuredPeakflow,
+      resultPercent: data.finalResult.resultPercent,
+      resultClass: data.finalResult.resultClass,
+      expectedPeakflow: data.finalResult.expectedPeakflow,
+      measuredPeakflow: data.finalResult.measuredPeakflow,
+      useBronchodilator: data.finalResult.useBronchodilator,
       resultDateTime: moment().format('DD/MM/YYYY, HH:mm:ss'),
     });
     return 'ok';
@@ -57,6 +58,7 @@ export async function getTestResults(docLimit) {
         measuredPeakflow: doc.data().measuredPeakflow,
         resultClass: doc.data().resultClass,
         resultDateTime: doc.data().resultDateTime,
+        useBronchodilator: doc.data().useBronchodilator,
       };
       results.push(result);
     });

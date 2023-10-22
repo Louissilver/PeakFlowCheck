@@ -45,8 +45,6 @@ const ResultsChart = ({line}) => {
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           }}
           getDotColor={(dataPoint, dataPointIndex) => {
-            console.log('dataPoint ---->', dataPoint);
-            console.log('dataPointIndex --->', dataPointIndex);
             //based on condition we return the color as string
             if (dataPoint >= 80) {
               return '#00FF7F';

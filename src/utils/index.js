@@ -1,4 +1,4 @@
-export const calculatePEF = (user, measuredPEF) => {
+export const calculatePEF = (user, measuredPEF, useBronchodilator) => {
   let expectedPEF = 0;
   let percentMeasure = 0;
   let finalResult = '';
@@ -35,6 +35,7 @@ export const calculatePEF = (user, measuredPEF) => {
     resultClass: finalResult,
     expectedPeakflow: expectedPEF.toFixed(2),
     measuredPeakflow: measuredPEF.toFixed(2),
+    useBronchodilator: useBronchodilator,
   };
 
   return results;

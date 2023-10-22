@@ -28,10 +28,16 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 5,
   },
   date: {
     flex: 1,
     marginRight: 5,
+  },
+  bronchodilator: {
+    flex: 1,
+    marginLeft: 10,
+    fontWeight: 'bold',
   },
   resultClass: {
     width: 100,

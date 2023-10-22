@@ -4,6 +4,7 @@ import styles from './styles';
 
 const ListItem = ({
   resultDateTime,
+  bronchodilator,
   resultClass,
   resultPercent,
   measuredPeakflow,
@@ -20,6 +21,9 @@ const ListItem = ({
     <View style={styles.itemContainer}>
       <View style={styles.resultContainer}>
         <Text style={styles.date}>{resultDateTime}</Text>
+        <Text style={styles.bronchodilator}>
+          {bronchodilator ? 'Broncodilatador' : ''}
+        </Text>
       </View>
       <View style={styles.resultContainer}>
         <Text style={[{...styles.resultClass}, {backgroundColor: classColor}]}>
@@ -53,6 +57,7 @@ const ListResult = ({data}) => {
           resultClass={item.resultClass}
           resultPercent={item.resultPercent}
           measuredPeakflow={item.measuredPeakflow}
+          bronchodilator={item.useBronchodilator}
           key={index}
         />
       ))}

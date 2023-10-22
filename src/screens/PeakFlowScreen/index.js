@@ -14,8 +14,11 @@ import {calculatePEF} from '../../utils';
 import {auth} from '../../config/firebase';
 import {getUserInformation} from '../../services/userInformation';
 import {saveTestResult} from '../../services/testResults';
+import {CheckBox} from 'react-native-elements';
+import {theme} from '../../styles/globalStyles';
 
 const PeakFlowScreen = ({navigation}) => {
+  const [useBronchodilator, setUseBronchodilator] = useState(false);
   const [recording, setRecording] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [generating, setGenerating] = useState(false);
@@ -41,7 +44,7 @@ const PeakFlowScreen = ({navigation}) => {
   }
 
   async function execSaveTestResult(finalResult) {
-    const saveResult = await saveTestResult(finalResult);
+    const saveResult = await saveTestResult({finalResult});
     if (saveResult === 'error') {
       return;
     }
@@ -74,6 +77,7 @@ const PeakFlowScreen = ({navigation}) => {
       setResult(null);
       setAudioURI(null);
       setMeasuredPeakFlow(null);
+      setUseBronchodilator(false);
     });
     return resetResult;
   }, [navigation]);
@@ -182,7 +186,11 @@ const PeakFlowScreen = ({navigation}) => {
     setMeasuredPeakFlow(peakFlow.toFixed(2));
 
     // Calcula o resultado do PFE obtido X PFE esperado
-    const calculatedResult = calculatePEF(userData, peakFlow);
+    const calculatedResult = calculatePEF(
+      userData,
+      peakFlow,
+      useBronchodilator,
+    );
     if (calculatedResult.resultPercent > 150) {
       Alert.alert(
         'Erro',
@@ -218,6 +226,20 @@ const PeakFlowScreen = ({navigation}) => {
             para soprar o apito. Certifique-se de estar cerca de 10 cm de
             distância do microfone do seu celular.
           </Paragraph>
+          <CheckBox
+            title={'Usei broncodilatador'}
+            containerStyle={{
+              backgroundColor: theme.background,
+            }}
+            textStyle={{fontSize: 16}}
+            checked={useBronchodilator}
+            onPress={() => {
+              setUseBronchodilator(!useBronchodilator);
+            }}
+            value={useBronchodilator}
+            size={30}
+            center
+          />
           <Button disable={recording} onPress={startRecording}>
             Iniciar gravação
           </Button>
@@ -268,6 +290,7 @@ const PeakFlowScreen = ({navigation}) => {
             onPress={() => {
               setMeasuredPeakFlow(null);
               setResult(null);
+              setUseBronchodilator(false);
             }}>
             Refazer teste
           </Button>
