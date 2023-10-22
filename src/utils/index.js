@@ -74,7 +74,6 @@ export function generateCSV(data) {
   // Criando a primeira linha do CSV com os nomes das colunas
   let csv = keys.join(',') + '\n';
 
-  // Calculando as larguras das colunas
   // Iterando pelos dados e criando linhas CSV
   data.forEach(item => {
     const csvRow = keys.map(key => item[key]).join(',');
